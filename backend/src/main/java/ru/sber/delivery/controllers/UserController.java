@@ -29,7 +29,7 @@ public class UserController {
     private ShiftService shiftService;
 
     /**
-     * Конструктор контроллера заданий
+     * Конструктор контроллера пользователей
      */
     @Autowired
     public UserController(UserService userService, ShiftService shiftService) {
@@ -91,9 +91,15 @@ public class UserController {
      * Добавляет смену
      */
     @PostMapping("/shifts")
-    public long addShift(@RequestBody Shift shift) {
-        log.info("Добавление смену");
-        return shiftService.beginShift(shift);
+    public ResponseEntity<?> addShift(@RequestBody Shift shift) {
+        log.info("Добавление смены", shift);
+        long id = shiftService.beginShift(shift)
+
+        if (id != 0){
+            return ResponseEntity.created(URI.create("/shifts/"+id)).build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     /**
