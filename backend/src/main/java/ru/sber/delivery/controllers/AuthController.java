@@ -22,9 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -83,7 +81,6 @@ public class AuthController {
         User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
         
-        Set<Role> roles = new HashSet<>();
         Role userRole = roleRepository.findByName(ERole.COURIER)
                     .orElseThrow(() -> new RuntimeException("Роль не найдена"));
         user.setRole(userRole);

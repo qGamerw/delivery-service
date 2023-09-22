@@ -46,7 +46,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean updateUser(User user) {
+        if (checkUserExistance(user.getId())) {
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public Optional<User> findByEmailAndPassword(String email, String password) {
         return userRepository.findUserByEmailAndPassword(email, password);
     }
+
+
 }

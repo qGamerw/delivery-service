@@ -1,6 +1,5 @@
 package ru.sber.delivery.services;
 
-import org.springframework.stereotype.Service;
 import ru.sber.delivery.entities.User;
 
 import java.util.Optional;
@@ -13,6 +12,8 @@ public interface UserService {
     boolean checkUserExistance(long userId);
 
     boolean deleteUser(User user);
+
+    boolean updateUser(User user);
 
     Optional<User> findByEmailAndPassword(String email, String password);
 }
