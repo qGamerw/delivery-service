@@ -51,8 +51,11 @@ public class User {
     @NotBlank
     private EStatusCourier status;
 
-    BigDecimal latitude;
-    BigDecimal longitude;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
+
+    @Column(name = "notify")
+    private boolean isNotify;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
@@ -62,5 +65,18 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public User(long id, String username, String email,
+                    String password, LocalDateTime dateRegistration,
+                    EStatusCourier status, BigDecimal latitude, BigDecimal longitude) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.dateRegistration = dateRegistration;
+        this.status = status;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }

@@ -71,7 +71,7 @@ public class UserController {
      * Получает информацию о пользователе
      */
     @GetMapping
-    public UserDTO getUsersData(@RequestParam long userId) {
+    public Optional<User> getUsersData(@RequestParam long userId) {
         log.info("Получение информации пользователя");
 
         return userService.getUserById(userId);
@@ -81,7 +81,7 @@ public class UserController {
      * Получает список пользователей
      */
     @GetMapping
-    public List<UserDTO> getDataOfUsers() {
+    public List<User> getDataOfUsers() {
         log.info("Получение информации всех пользователей");
 
         return userService.getAllUsers();
@@ -93,7 +93,7 @@ public class UserController {
     @PostMapping("/shifts")
     public ResponseEntity<?> addShift(@RequestBody Shift shift) {
         log.info("Добавление смены", shift);
-        long id = shiftService.beginShift(shift)
+        long id = shiftService.beginShift(shift);
 
         if (id != 0){
             return ResponseEntity.created(URI.create("/shifts/"+id)).build();

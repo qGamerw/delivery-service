@@ -6,6 +6,7 @@ import ru.sber.delivery.entities.User;
 import ru.sber.delivery.repositories.ShiftRepository;
 import ru.sber.delivery.repositories.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,6 +53,11 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return null;
     }
 
     @Override

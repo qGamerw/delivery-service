@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Orders {
+public class Order {
 
     @Id
     @Column(name = "id_order")

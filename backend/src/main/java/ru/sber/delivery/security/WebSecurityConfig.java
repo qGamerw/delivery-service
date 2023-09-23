@@ -37,14 +37,9 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/tasks/**").permitAll()
-                                .requestMatchers(HttpMethod.OPTIONS, "/tasks/**").permitAll()
-                                .requestMatchers( "/tasks/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
-                                .requestMatchers(HttpMethod.OPTIONS, "/categories/**").permitAll()
-                                .requestMatchers( "/categories/**").permitAll()
-                                .requestMatchers( "/**").permitAll()
+                        auth.requestMatchers("/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 
