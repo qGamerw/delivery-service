@@ -4,6 +4,7 @@ import ru.sber.delivery.entities.User;
 import ru.sber.delivery.entities.enum_model.EStatusCourier;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 /**
  * Отвечает за работу курьера
@@ -12,9 +13,10 @@ public interface CourierService {
 
     /**
      * Веозвращает информацию о курьере
+     *
      * @return информация о курьере
      */
-    User getUser();
+    Optional<User> findUser();
 
     /**
      * Обновляет информацию о курьере

@@ -4,6 +4,7 @@ import ru.sber.delivery.entities.Shift;
 import ru.sber.delivery.entities.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface ShiftService {
 
@@ -11,7 +12,7 @@ public interface ShiftService {
 
     boolean finishShift(Shift shift);
 
-    ArrayList<Shift> getAllShiftsOfUser(long userId);
+    List<Shift> getAllShiftsOfUser(long userId);
 
     boolean deleteShift(Shift shift);
 

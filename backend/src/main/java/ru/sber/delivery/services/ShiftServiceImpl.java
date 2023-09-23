@@ -7,6 +7,7 @@ import ru.sber.delivery.entities.User;
 import ru.sber.delivery.repositories.ShiftRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ShiftServiceImpl implements ShiftService {
@@ -30,7 +31,7 @@ public class ShiftServiceImpl implements ShiftService {
     }
 
     @Override
-    public ArrayList<Shift> getAllShiftsOfUser(long userId) {
+    public List<Shift> getAllShiftsOfUser(long userId) {
         return shiftRepository.findAllByUserId(userId);
     }
 

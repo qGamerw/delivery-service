@@ -10,16 +10,22 @@ import java.util.List;
 public interface RestaurantEmployeeService {
 
     /**
+     * Обновляет данные пользователя
+     * @param user новые данные администратора
+     * @return true - в случае успеха
+     */
+    boolean update(User user);
+    /**
      * Возвращает свободных курьеров
      * @return список курьеров
      */
-    List<User> getFreeCouriers();
+    List<User> findFreeCouriers();
 
     /**
      * Возвращает ближайшего свободного курьера
      * @return ближайший курьер
      */
-    User getNearestFreeCourier();
+    User findNearestFreeCourier();
 
     /**
      * Уведомляет курьера о заказе

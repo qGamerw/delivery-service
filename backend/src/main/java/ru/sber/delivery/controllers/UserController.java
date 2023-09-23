@@ -132,15 +132,6 @@ public class UserController {
         }
     }
 
-    /**
-     * Получает информацию о смене
-     */
-    @GetMapping("/shifts/{id}")
-    public List<Shift> getShift(@PathVariable long id) {
-        log.info("Получение инфорации о смене");
-
-        return shiftService.getShiftById(id);
-    }
 
     /**
      * Получает информацию о всех сменах пользователя
