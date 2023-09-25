@@ -3,19 +3,21 @@ package ru.sber.delivery.services;
 import ru.sber.delivery.entities.Shift;
 import ru.sber.delivery.entities.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface ShiftService {
 
-    long beginShift(Shift shift);
+    long save(Shift shift);
 
-    boolean finishShift(Shift shift);
+    boolean update(Shift shift);
 
-    List<Shift> getAllShiftsOfUser(long userId);
+    boolean delete(Shift shift);
 
-    boolean deleteShift(Shift shift);
-
-    boolean updateAllShiftsOfUser(User user);
+    /**
+     * Возвращает смены пользователя
+     * @param idUser - id пользователя
+     * @return - спискок смен
+     */
+    List<Shift> findAllShiftsByUser(long idUser);
 
 }

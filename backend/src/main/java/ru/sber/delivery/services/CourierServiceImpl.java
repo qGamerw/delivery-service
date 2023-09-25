@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import ru.sber.delivery.entities.User;
 import ru.sber.delivery.entities.enum_model.EStatusCourier;
 import ru.sber.delivery.exceptions.UserNotFound;
-import ru.sber.delivery.repositories.ShiftRepository;
 import ru.sber.delivery.repositories.UserRepository;
 import ru.sber.delivery.security.services.UserDetailsImpl;
 
@@ -20,26 +19,14 @@ import java.util.Optional;
 public class CourierServiceImpl implements CourierService {
 
     private final UserRepository userRepository;
+    private final AdministrationService administrationService;
 
     @Autowired
-    public CourierServiceImpl(UserRepository userRepository, ShiftRepository shiftRepository) {
+    public CourierServiceImpl(UserRepository userRepository, AdministrationService administrationService) {
         this.userRepository = userRepository;
+        this.administrationService = administrationService;
     }
 
-    /**
-     * Возвращает id user из security context
-     * @return индификатор пользователя
-     */
-    private long getUserIdSecurityContext() {
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetailsImpl) {
-            return ((UserDetailsImpl)principal).getId();
-        } else {
-            throw new UserNotFound("Пользователь не найден");
-        }
-    }
     @Override
     public Optional<User> findUser() {
         return userRepository.findById(getUserIdSecurityContext());
@@ -47,17 +34,13 @@ public class CourierServiceImpl implements CourierService {
 
     @Override
     public boolean update(User user) {
-        if(getUserIdSecurityContext() == user.getId()) {
-            userRepository.save(user);
-            return true;
-        }
-        return false;
+        return administrationService.update(user);
     }
 
     @Override
-    public boolean updateStatusUser(EStatusCourier statusCourier) {
+    public boolean updateUserStatus(EStatusCourier statusCourier) {
         Optional<User> user = userRepository.findById(getUserIdSecurityContext());
-        if(user.isPresent()){
+        if (user.isPresent()) {
             user.get().setStatus(statusCourier);
             return update(user.get());
         }
@@ -65,13 +48,29 @@ public class CourierServiceImpl implements CourierService {
     }
 
     @Override
-    public boolean updateCoordinateUser(BigDecimal latitude, BigDecimal longitude) {
+    public boolean updateUserCoordinates(BigDecimal latitude, BigDecimal longitude) {
         Optional<User> user = userRepository.findById(getUserIdSecurityContext());
-        if(user.isPresent()){
+        if (user.isPresent()) {
             user.get().setLatitude(latitude);
             user.get().setLongitude(longitude);
             return update(user.get());
         }
         return false;
+    }
+
+    /**
+     * Возвращает id user из security context
+     *
+     * @return индификатор пользователя
+     */
+    private long getUserIdSecurityContext() {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetailsImpl) {
+            return ((UserDetailsImpl) principal).getId();
+        } else {
+            throw new UserNotFound("Пользователь не найден");
+        }
     }
 }

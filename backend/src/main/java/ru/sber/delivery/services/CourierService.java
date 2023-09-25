@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface CourierService {
 
     /**
-     * Веозвращает информацию о курьере
+     * Возвращает информацию о курьере
      *
      * @return информация о курьере
      */
@@ -20,6 +20,7 @@ public interface CourierService {
 
     /**
      * Обновляет информацию о курьере
+     *
      * @param user - новые данные курьера
      * @return true в случае успеха
      */
@@ -27,17 +28,19 @@ public interface CourierService {
 
     /**
      * Обновляет статус курьера
+     *
      * @param statusCourier - новый статус
-     * @return
+     * @return true в случае успеха
      */
-    boolean updateStatusUser(EStatusCourier statusCourier);
+    boolean updateUserStatus(EStatusCourier statusCourier);
 
     /**
      * Обновляет местоположение курьера
-     * @param latitude - широта
+     *
+     * @param latitude  - широта
      * @param longitude - долгота
-     * @return
+     * @return true в случае успеха
      */
-    boolean updateCoordinateUser(BigDecimal latitude, BigDecimal longitude);
+    boolean updateUserCoordinates(BigDecimal latitude, BigDecimal longitude);
 
 }

@@ -6,7 +6,6 @@ import ru.sber.delivery.entities.Shift;
 import ru.sber.delivery.entities.User;
 import ru.sber.delivery.repositories.ShiftRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,30 +19,31 @@ public class ShiftServiceImpl implements ShiftService {
     }
 
     @Override
-    public long beginShift(Shift shift) {
+    public long save(Shift shift) {
         return shiftRepository.save(shift).getId();
     }
 
     @Override
-    public boolean finishShift(Shift shift) {
-        shiftRepository.save(shift);
-        return true;
-    }
-
-    @Override
-    public List<Shift> getAllShiftsOfUser(long userId) {
-        return shiftRepository.findAllByUserId(userId);
-    }
-
-    @Override
-    public boolean deleteShift(Shift shift) {
-        shiftRepository.delete(shift);
-        return true;
-    }
-
-    @Override
-    public boolean updateAllShiftsOfUser(User user) {
-
+    public boolean update(Shift shift) {
+        if (shiftRepository.existsById(shift.getId())) {
+            shiftRepository.save(shift);
+            return true;
+        }
         return false;
     }
+
+    @Override
+    public boolean delete(Shift shift) {
+        if (shiftRepository.existsById(shift.getId())) {
+            shiftRepository.delete(shift);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<Shift> findAllShiftsByUser(long idUser) {
+        return shiftRepository.findAllByUserId(idUser);
+    }
+
 }

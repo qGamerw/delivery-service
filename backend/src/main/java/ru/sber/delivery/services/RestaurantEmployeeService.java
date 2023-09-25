@@ -2,7 +2,9 @@ package ru.sber.delivery.services;
 
 import ru.sber.delivery.entities.User;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Отвечает за работу работника ресторана
@@ -23,16 +25,16 @@ public interface RestaurantEmployeeService {
 
     /**
      * Возвращает ближайшего свободного курьера
+     *
      * @return ближайший курьер
      */
-    User findNearestFreeCourier();
+    Optional<User> findNearestFreeCourier(BigDecimal restaurantLatitude, BigDecimal restaurantLongitude);
 
     /**
      * Уведомляет курьера о заказе
-     * @param idOrder - номер заказа
      * @param idUser - номер пользователя которого требуется уведомить
      * @return true в случае успеха
      */
-    boolean notifyCourier(long idOrder, long idUser);
+    boolean notifyCourier(long idUser);
 
 }

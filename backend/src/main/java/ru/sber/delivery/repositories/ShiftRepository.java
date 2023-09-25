@@ -15,9 +15,6 @@ public interface ShiftRepository extends JpaRepository<Shift, Long> {
 
     List<Shift> findAllByUserId(long userId);
 
-    @Query("UPDATE shifts set user_id = NULL where id in (select id from shifts where user_id = ?1)")
-    boolean updateAllByUser(long user_id);
-
     default List<Shift> findShiftsByBeginShift(LocalDate beginShift) {
         return findShiftsByBeginShiftBetween(beginShift.atStartOfDay(), beginShift.plusDays(1).atStartOfDay());
     }

@@ -33,8 +33,8 @@ public class AdministrationServiceImpl implements AdministrationService{
        if (userRepository.existsById(user.getId())) {
             userRepository.save(user);
             return true;
-        }
-        return false;
+       }
+       return false;
     }
 
     @Override
@@ -60,26 +60,12 @@ public class AdministrationServiceImpl implements AdministrationService{
     }
 
     @Override
-    public List<Shift> findAllShiftUser(long idUser) {
-        return shiftRepository.findAllByUserId(idUser);
-    }
-
-    @Override
     public List<User> findUsersByShift(LocalDate dateShift) {
         return shiftRepository.findShiftsByBeginShift(dateShift)
                 .stream()
                 .filter(shift -> userRepository.existsById(shift.getUser().getId()))
-                .map(getShiftUserFunction()).toList();
+                .map(Shift::getUser)
+                .toList();
     }
 
-    /**
-     * Возвращает пользователей по id
-     * @return - ользователь
-     */
-    private Function<Shift, User> getShiftUserFunction() {
-        return shift -> {
-            Optional<User> user = userRepository.findById(shift.getUser().getId());
-            return user.orElse(null);
-        };
-    }
 }

@@ -40,13 +40,6 @@ public interface AdministrationService {
     List<User> findAllUsers();
 
     /**
-     * Возвращает смены пользователя
-     * @param idUser - id пользователя
-     * @return - спискок смен
-     */
-    List<Shift> findAllShiftUser(long idUser);
-
-    /**
      * Возвращает пользоватлей вышедших на смену в заданный день
      * @param dateShift - день смены
      * @return - Список пользователей
