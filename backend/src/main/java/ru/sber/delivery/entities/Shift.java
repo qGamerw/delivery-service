@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Смена
+ */
 @Entity
 @Data
 @AllArgsConstructor
