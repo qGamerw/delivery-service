@@ -1,5 +1,6 @@
 package ru.sber.delivery.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.Optional;
 /**
  * Реализация сервиса для работника ресторана
  */
+@Slf4j
 @Service
 public class RestaurantEmployeeServiceImpl implements RestaurantEmployeeService {
 
@@ -36,17 +38,20 @@ public class RestaurantEmployeeServiceImpl implements RestaurantEmployeeService 
 
     @Override
     public boolean update(User user) {
+        log.info("Обновление данных (со стороны работника ресторана)");
         return administrationService.update(user);
     }
 
     @Override
     public List<User> findFreeCouriers() {
+        log.info("Поиск ближайших курьеров (со стороны работника ресторана)");
         return userRepository.findAllByStatus(EStatusCourier.FREE);
     }
 
     @Override
     public Optional<User> findNearestFreeCourier(BigDecimal restaurantLatitude, BigDecimal restaurantLongitude) {
         Optional<Role> role = roleRepository.findByName(ERole.COURIER);
+        log.info("Поиск ближайшего свободного курьера (со стороны работника ресторана)");
         if (role.isPresent()) {
             List<User> freeCouriers = userRepository.findUserByRoleAndStatus(role.get(), EStatusCourier.FREE);
             User nearestCourier = freeCouriers
@@ -56,6 +61,7 @@ public class RestaurantEmployeeServiceImpl implements RestaurantEmployeeService 
                     .orElse(null);
             return Optional.ofNullable(nearestCourier);
         }
+        log.warn("Курьер не  найден");
         return Optional.empty();
     }
 
@@ -78,8 +84,10 @@ public class RestaurantEmployeeServiceImpl implements RestaurantEmployeeService 
 
     @Override
     public boolean notifyCourier(long idUser) {
+        log.info("Уведомление курьера о заказе");
         Optional<User> user = userRepository.findById(idUser);
         if (user.isPresent()) {
+            log.info("Уведомление курьера о заказе");
             user.get().setNotify(true);
             return update(user.get());
         }
