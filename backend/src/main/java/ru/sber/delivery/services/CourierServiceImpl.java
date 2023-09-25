@@ -1,5 +1,6 @@
 package ru.sber.delivery.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.Optional;
 /**
  * Реализация сервиса для курьера
  */
+@Slf4j
 @Service
 public class CourierServiceImpl implements CourierService {
 
@@ -29,32 +31,40 @@ public class CourierServiceImpl implements CourierService {
 
     @Override
     public Optional<User> findUser() {
+        log.info("Поиск информации о курьере (сторона курьера)");
         return userRepository.findById(getUserIdSecurityContext());
     }
 
     @Override
     public boolean update(User user) {
+        log.info("Обноваление информации о пользователе");
         return administrationService.update(user);
     }
 
     @Override
     public boolean updateUserStatus(EStatusCourier statusCourier) {
+        log.info("Обноваление статуса пользователя");
         Optional<User> user = userRepository.findById(getUserIdSecurityContext());
         if (user.isPresent()) {
+            log.info("Обноваление успешно");
             user.get().setStatus(statusCourier);
             return update(user.get());
         }
+        log.warn("Обноваление провалено");
         return false;
     }
 
     @Override
     public boolean updateUserCoordinates(BigDecimal latitude, BigDecimal longitude) {
+        log.info("Обноваление координат пользователя");
         Optional<User> user = userRepository.findById(getUserIdSecurityContext());
         if (user.isPresent()) {
+            log.info("Обноваление успешно");
             user.get().setLatitude(latitude);
             user.get().setLongitude(longitude);
             return update(user.get());
         }
+        log.warn("Обноваление провалено");
         return false;
     }
 
