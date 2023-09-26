@@ -1,20 +1,14 @@
 package ru.sber.delivery.controllers;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.sber.delivery.entities.Shift;
-import ru.sber.delivery.entities.User;
-import ru.sber.delivery.entities.data.Coordinates;
-import ru.sber.delivery.entities.enum_model.EStatusCourier;
-import ru.sber.delivery.services.CourierService;
-import ru.sber.delivery.services.ShiftService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.sber.delivery.entities.Shift;
+import ru.sber.delivery.services.ShiftService;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Класс отвечающий за обработку запросов о сменах
@@ -23,7 +17,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("shifts")
 public class ShiftController {
-    private ShiftService shiftService;
+    private final ShiftService shiftService;
 
     /**
      * Конструктор контроллера смен
@@ -35,14 +29,16 @@ public class ShiftController {
 
     /**
      * Добавляет смену
+     *
+     * @return - результат запроса
      */
     @PostMapping
-    public ResponseEntity<?> addShift(@RequestBody Shift shift) {
+    public ResponseEntity<?> addShift() {
         log.info("Добавление смены");
-        long id = shiftService.save(shift);
+        long id = shiftService.save();
 
-        if (id != 0){
-            return ResponseEntity.created(URI.create("/shifts/"+id)).build();
+        if (id != 0) {
+            return ResponseEntity.created(URI.create("/shifts/" + id)).build();
         } else {
             return ResponseEntity.badRequest().build();
         }
@@ -50,12 +46,15 @@ public class ShiftController {
 
     /**
      * Обновляет информацию о смене
+     *
+     * @param shift - новая информация о смене
+     * @return - результат запроса
      */
     @PutMapping
     public ResponseEntity<?> updateCourier(@RequestBody Shift shift) {
         log.info("Обновление данных о смене");
 
-        if (shiftService.update(shift)){
+        if (shiftService.update(shift)) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();
@@ -64,11 +63,13 @@ public class ShiftController {
 
     /**
      * Удаляет смену
+     *
+     * @param idShift - индификатор смены
      */
-    @DeleteMapping
-    public ResponseEntity<?> deleteCourier(@RequestBody Shift shift) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCourier(@PathVariable("id") long idShift) {
         log.info("Удаление смены");
-        boolean isDeleted = shiftService.delete(shift);
+        boolean isDeleted = shiftService.delete(idShift);
 
         if (isDeleted) {
             return ResponseEntity.noContent().build();
@@ -79,16 +80,16 @@ public class ShiftController {
 
     /**
      * Получает информацию о всех сменах курьера
+     *
+     * @param idUser - индификатор пользователя
+     * @return - смены пользователя
      */
     @GetMapping("/courier/{id}")
-    public List<Shift> getAllCouriersData(@PathVariable long idUser) {
+    public ResponseEntity<List<Shift>> getAllCouriersData(@PathVariable("id") long idUser) {
         log.info("Получение информации о всех сменах курьера");
-        List<Shift> shiftList = shiftService.findAllShiftsByUser(idUser);
+        return ResponseEntity.ok().body(shiftService.findAllShiftsByUser(idUser));
 
-        return shiftList;
-        
     }
-
 
 
 }

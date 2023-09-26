@@ -2,11 +2,15 @@ package ru.sber.delivery.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.sber.delivery.entities.Shift;
 import ru.sber.delivery.entities.User;
+import ru.sber.delivery.exceptions.UserNotFound;
 import ru.sber.delivery.repositories.ShiftRepository;
+import ru.sber.delivery.security.services.UserDetailsImpl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,8 +28,13 @@ public class ShiftServiceImpl implements ShiftService {
     }
 
     @Override
-    public long save(Shift shift) {
+    public long save() {
         log.info("Смена создана");
+        Shift shift = new Shift();
+        shift.setBeginShift(LocalDateTime.now());
+        User user = new User();
+        user.setId(getUserIdSecurityContext());
+        shift.setUser(user);
         return shiftRepository.save(shift).getId();
     }
 
@@ -42,11 +51,11 @@ public class ShiftServiceImpl implements ShiftService {
     }
 
     @Override
-    public boolean delete(Shift shift) {
+    public boolean delete(long idShift) {
         log.info("Удапление смены");
-        if (shiftRepository.existsById(shift.getId())) {
+        if (shiftRepository.existsById(idShift)) {
             log.info("Удапление успешно");
-            shiftRepository.delete(shift);
+            shiftRepository.deleteById(idShift);
             return true;
         }
         log.warn("Удапление провалено");
@@ -57,6 +66,22 @@ public class ShiftServiceImpl implements ShiftService {
     public List<Shift> findAllShiftsByUser(long idUser) {
         log.info("поиск смен пользователя");
         return shiftRepository.findAllByUserId(idUser);
+    }
+
+    /**
+     * Возвращает id user из security context
+     *
+     * @return индификатор пользователя
+     */
+    private long getUserIdSecurityContext() {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetailsImpl) {
+            return ((UserDetailsImpl) principal).getId();
+        } else {
+            throw new UserNotFound("Пользователь не найден");
+        }
     }
 
 }

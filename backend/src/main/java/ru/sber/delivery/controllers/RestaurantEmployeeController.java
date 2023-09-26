@@ -1,19 +1,15 @@
 package ru.sber.delivery.controllers;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.sber.delivery.entities.User;
-import ru.sber.delivery.entities.data.Coordinates;
-import ru.sber.delivery.entities.enum_model.EStatusCourier;
-import ru.sber.delivery.services.AdministrationService;
-import ru.sber.delivery.services.CourierService;
-import ru.sber.delivery.services.RestaurantEmployeeService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.sber.delivery.entities.User;
+import ru.sber.delivery.entities.data.Coordinates;
+import ru.sber.delivery.services.RestaurantEmployeeService;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Класс отвечающий за обработку запросов работника ресторана
@@ -22,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("employees")
 public class RestaurantEmployeeController {
-    private RestaurantEmployeeService restaurantEmployeeService;
+    private final RestaurantEmployeeService restaurantEmployeeService;
 
     /**
      * Конструктор контроллера работника ресторана
@@ -34,6 +30,9 @@ public class RestaurantEmployeeController {
 
     /**
      * Обновляет информацию о работнике ресторана
+     *
+     * @param user - новая информация о пользователе
+     * @return - результат запроса
      */
     @PutMapping
     public ResponseEntity<?> updateCourier(@RequestBody User user) {
@@ -48,18 +47,20 @@ public class RestaurantEmployeeController {
 
     /**
      * Получает информацию о свободных курьерах
+     * @return - список свободных курьеров
      */
     @GetMapping("/free-couriers")
-    public List<User> getFreeCouriers() {
+    public ResponseEntity<List<User>> getFreeCouriers() {
         log.info("Получение информации о свободных курьерах");
-        List<User> userList = restaurantEmployeeService.findFreeCouriers();
 
-        return userList;
+        return ResponseEntity.ok().body(restaurantEmployeeService.findFreeCouriers());
         
     }
 
     /**
      * Получает информацию о ближайшем свободном курьере
+     * @param coordinates - координаты ресторана
+     * @return - результат запроса
      */
     @GetMapping("/nearest-free-courier")
     public ResponseEntity<?> getNearestFreeCourier(@RequestBody Coordinates coordinates) {
@@ -77,9 +78,11 @@ public class RestaurantEmployeeController {
 
     /**
      * Уведомляет курьера о заказе
+     * @param idUser - индификатор курьера
+     * @return - результат запроса
      */
     @PutMapping("/notify/{id}")
-    public ResponseEntity<?> notifyCourier(@PathVariable long idUser) {
+    public ResponseEntity<?> notifyCourier(@PathVariable("id") long idUser) {
         log.info("Уведомление курьера о заказе");
         
         if (restaurantEmployeeService.notifyCourier(idUser)){

@@ -1,16 +1,15 @@
 package ru.sber.delivery.controllers;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.sber.delivery.entities.User;
-import ru.sber.delivery.services.AdministrationService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.sber.delivery.entities.User;
+import ru.sber.delivery.services.AdministrationService;
 
 import java.time.LocalDate;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Класс отвечающий за обработку запросов администраторов
@@ -19,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("administrators")
 public class AdministratorController {
-    private AdministrationService administratorService;
+    private final AdministrationService administratorService;
 
     /**
      * Конструктор контроллера администраторов
@@ -30,29 +29,35 @@ public class AdministratorController {
     }
 
     /**
-     * Получает информацию о курьере
+     * Возвращает информацию о курьере
+     *
+     * @param idUser - индификатор курьера
+     * @return - данные о курьере
      */
     @GetMapping("/courier/{id}")
-    public ResponseEntity<?> getCouriersData(@PathVariable long idUser) {
+    public ResponseEntity<?> getCouriersData(@PathVariable("id") long idUser) {
         log.info("Получение информации о курьере");
         Optional<User> optionalUser = administratorService.findUser(idUser);
 
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             return ResponseEntity.ok().body(optionalUser.get());
         } else {
             return ResponseEntity.notFound().build();
         }
-        
+
     }
 
     /**
      * Обновляет информацию о курьере
+     *
+     * @param user - новая информация о пользователе
+     * @return - результат запроса
      */
     @PutMapping
     public ResponseEntity<?> updateCourier(@RequestBody User user) {
         log.info("Обновление данных о курьере");
 
-        if (administratorService.update(user)){
+        if (administratorService.update(user)) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();
@@ -61,10 +66,15 @@ public class AdministratorController {
 
     /**
      * Удаляет курьера
+     *
+     * @param idUser - индификатор пользователя
+     * @return - результат запроса
      */
-    @DeleteMapping
-    public ResponseEntity<?> deleteCourier(@RequestBody User user) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCourier(@PathVariable("id") long idUser) {
         log.info("Удаление курьера");
+        User user = new User();
+        user.setId(idUser);
         boolean isDeleted = administratorService.delete(user);
 
         if (isDeleted) {
@@ -76,26 +86,27 @@ public class AdministratorController {
 
     /**
      * Получает информацию о всех курьерах
+     *
+     * @return - список курьеров
      */
     @GetMapping("/all-couriers")
-    public List<User> getAllCouriersData() {
+    public  ResponseEntity<List<User>> getAllCouriersData() {
         log.info("Получение информацию о курьерах");
-        List<User> userList = administratorService.findAllUsers();
 
-        return userList;
-        
+        return ResponseEntity.ok().body(administratorService.findAllUsers());
+
     }
 
     /**
      * Получает информацию о всех курьерах вышедших на смену в заданный день
+     *
+     * @return - список курьеров
      */
     @GetMapping("/all-couriers/by-date")
-    public List<User> getAllShifts(@RequestBody LocalDate shiftDate) {
+    public ResponseEntity<List<User>> getAllShifts(@RequestBody LocalDate shiftDate) {
         log.info("Получение информации о всех пользователях вышедших на смену в заданный день");
-        List<User> userList = administratorService.findUsersByShift(shiftDate);
 
-        return userList;
-        
+        return ResponseEntity.ok().body(administratorService.findUsersByShift(shiftDate));
     }
 
 

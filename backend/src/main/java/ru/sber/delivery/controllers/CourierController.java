@@ -1,14 +1,13 @@
 package ru.sber.delivery.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ru.sber.delivery.entities.User;
 import ru.sber.delivery.entities.data.Coordinates;
 import ru.sber.delivery.entities.enum_model.EStatusCourier;
 import ru.sber.delivery.services.CourierService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -19,7 +18,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("couriers")
 public class CourierController {
-    private CourierService courierService;
+    private final CourierService courierService;
 
     /**
      * Конструктор контроллера курьеров
@@ -47,6 +46,8 @@ public class CourierController {
 
     /**
      * Обновляет информацию о курьере
+     *
+     * @param user - новая информация о пользователе
      */
     @PutMapping
     public ResponseEntity<?> updateCourier(@RequestBody User user) {
@@ -61,6 +62,7 @@ public class CourierController {
 
     /**
      * Обновляет статус курьера
+     * @param statusCourier - новый статус курьера
      */
     @PutMapping("/status")
     public ResponseEntity<?> updateCourierStatus(@RequestBody String statusCourier) {
@@ -75,6 +77,8 @@ public class CourierController {
 
     /**
      * Обновляет местоположение курьера
+     *
+     * @param coordinates - новые координаты курьера
      */
     @PutMapping("/coordinates")
     public ResponseEntity<?> updateCourierCoordinates(@RequestBody Coordinates coordinates) {

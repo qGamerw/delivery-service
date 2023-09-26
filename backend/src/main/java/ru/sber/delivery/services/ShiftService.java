@@ -13,10 +13,9 @@ public interface ShiftService {
     /**
      * Создает новую смену курьера
      *
-     * @param shift - смена
      * @return - id смены
      */
-    long save(Shift shift);
+    long save();
 
     /**
      * Заканчивает смену курьера
@@ -29,10 +28,10 @@ public interface ShiftService {
     /**
      * Удаляет смену
      *
-     * @param shift - смена
+     * @param idShift - индификатор смены
      * @return - true  случае успеха
      */
-    boolean delete(Shift shift);
+    boolean delete(long idShift);
 
     /**
      * Возвращает смены пользователя
