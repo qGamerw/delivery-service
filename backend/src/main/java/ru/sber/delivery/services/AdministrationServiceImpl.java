@@ -64,7 +64,7 @@ public class AdministrationServiceImpl implements AdministrationService {
         log.info("Поиск пользователей со стороны администратора");
         return userRepository.findAll()
                 .stream()
-                .filter(user -> user.getRole().getRole() != ERole.ADMINISTRATION)
+                .filter(user -> user.getRole().getRole() != ERole.ADMINISTRATOR)
                 .toList();
     }
 

@@ -50,7 +50,7 @@ public class RestaurantEmployeeServiceImpl implements RestaurantEmployeeService 
 
     @Override
     public Optional<User> findNearestFreeCourier(BigDecimal restaurantLatitude, BigDecimal restaurantLongitude) {
-        Optional<Role> role = roleRepository.findByName(ERole.COURIER);
+        Optional<Role> role = roleRepository.findByRole(ERole.COURIER);
         log.info("Поиск ближайшего свободного курьера (со стороны работника ресторана)");
         if (role.isPresent()) {
             List<User> freeCouriers = userRepository.findUserByRoleAndStatus(role.get(), EStatusCourier.FREE);

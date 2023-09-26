@@ -1,0 +1,34 @@
+GET localhost:8080/couriers
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk1NzI0NTQwLCJleHAiOjE2OTU4MTA5NDB9.uoKCheJnhYNeLUfIp9RTYDscJ03tevXgYs5pqXPtzx8
+
+
+###
+PUT localhost:8080/couriers
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk1NzI0NTQwLCJleHAiOjE2OTU4MTA5NDB9.uoKCheJnhYNeLUfIp9RTYDscJ03tevXgYs5pqXPtzx8
+Content-Type: application/json
+
+{
+  "id": 1,
+  "username" : "test2",
+  "email": "test@yandex.ru",
+  "password": "password"
+}
+
+###
+PUT localhost:8080/couriers/status
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk1NzI0NTQwLCJleHAiOjE2OTU4MTA5NDB9.uoKCheJnhYNeLUfIp9RTYDscJ03tevXgYs5pqXPtzx8
+Content-Type: application/json
+
+{
+  "statusCourier" : "FREE"
+}
+
+###
+PUT localhost:8080/couriers/coordinates
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk1NzI0NTQwLCJleHAiOjE2OTU4MTA5NDB9.uoKCheJnhYNeLUfIp9RTYDscJ03tevXgYs5pqXPtzx8
+Content-Type: application/json
+
+{
+  "latitude" : "145.6767",
+  "longitude" : "123.3434"
+}

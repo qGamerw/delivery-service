@@ -48,12 +48,10 @@ public class User {
     @Column(name = "date_registration")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotBlank
     private LocalDateTime dateRegistration;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    @NotBlank
     private EStatusCourier status;
 
     private BigDecimal latitude;
