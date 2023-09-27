@@ -88,7 +88,7 @@ public class RestaurantEmployeeServiceImpl implements RestaurantEmployeeService 
         Optional<User> user = userRepository.findById(idUser);
         if (user.isPresent()) {
             log.info("Уведомление курьера о заказе");
-            user.get().setNotify(true);
+            user.get().setIsNotify(true);
             return update(user.get());
         }
         return false;

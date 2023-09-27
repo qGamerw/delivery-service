@@ -4,13 +4,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsImlhdCI6MTY5NTgzO
 
 ###
 PUT http://localhost:8080/couriers
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0NCIsImlhdCI6MTY5NTgzOTA1NCwiZXhwIjoxNjk1OTI1NDU0fQ.ZPC7mVlm1HZGgifLeE-0eNcWHJc9w97_n3t9drKJSdE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MiIsImlhdCI6MTY5NTg0MTExMiwiZXhwIjoxNjk1OTI3NTEyfQ.YK8fws_cXqgrjNDjioZqSHJbYj3whoWsWgB_VJKC_e8
 Content-Type: application/json
 
 {
   "id": 1,
   "username" : "test2",
-  "email": "test@yandex.ru",
+  "email": "test2@yandex.ru",
   "password": "password"
 }
 
