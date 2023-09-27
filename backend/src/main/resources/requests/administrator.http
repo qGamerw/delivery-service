@@ -3,14 +3,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTgyM
 
 ###
 PUT http://localhost:8080/administrators
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTgyMjA1MCwiZXhwIjoxNjk1OTA4NDUwfQ.ojrcsGb99kpZvkGWsFvxF1dk5CeWohwhfZlN2Itc5zw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsImlhdCI6MTY5NTgzODk4MSwiZXhwIjoxNjk1OTI1MzgxfQ.WnaOmmz9JXj8CTvCPDvWHRu8EzbkL47cGZBGQOdVhOY
 Content-Type: application/json
 
 {
-  "id": 4,
-  "username" : "test4",
-  "email": "test4@yandex.ru",
-  "password": "password"
+  "id": 1,
+  "username" : "test3",
+  "email": "test3@yandex.ru"
 }
 
 ###

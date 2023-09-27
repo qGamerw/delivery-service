@@ -37,41 +37,41 @@ public class CourierServiceImpl implements CourierService {
 
     @Override
     public boolean update(User user) {
-        log.info("Обноваление информации о пользователе");
+        log.info("Обновление информации о пользователе");
         return administrationService.update(user);
     }
 
     @Override
     public boolean updateUserStatus(EStatusCourier statusCourier) {
-        log.info("Обноваление статуса пользователя");
+        log.info("Обновление статуса пользователя");
         Optional<User> user = userRepository.findById(getUserIdSecurityContext());
         if (user.isPresent()) {
-            log.info("Обноваление успешно");
+            log.info("Обновление успешно");
             user.get().setStatus(statusCourier);
             return update(user.get());
         }
-        log.warn("Обноваление провалено");
+        log.warn("Обновление провалено");
         return false;
     }
 
     @Override
     public boolean updateUserCoordinates(BigDecimal latitude, BigDecimal longitude) {
-        log.info("Обноваление координат пользователя");
+        log.info("Обновление координат пользователя");
         Optional<User> user = userRepository.findById(getUserIdSecurityContext());
         if (user.isPresent()) {
-            log.info("Обноваление успешно");
+            log.info("Обновление успешно");
             user.get().setLatitude(latitude);
             user.get().setLongitude(longitude);
             return update(user.get());
         }
-        log.warn("Обноваление провалено");
+        log.warn("Обновление провалено");
         return false;
     }
 
     /**
      * Возвращает id user из security context
      *
-     * @return индификатор пользователя
+     * @return идентификатор пользователя
      */
     private long getUserIdSecurityContext() {
 

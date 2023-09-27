@@ -1,5 +1,6 @@
 package ru.sber.delivery.services;
 
+import jakarta.validation.constraints.Null;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,14 @@ public class AdministrationServiceImpl implements AdministrationService {
     public boolean update(User user) {
         log.info("Обновление данных пользователя: {}", user.getId());
         if (userRepository.existsById(user.getId())) {
+            User oldUser = userRepository.findById(user.getId()).get();
+            if (user.getPassword() == null) {
+                user.setPassword(oldUser.getPassword());
+            }
+            user.setDateRegistration(oldUser.getDateRegistration());
+            if (user.getRole() == null) {
+                user.setRole(oldUser.getRole());
+            }
             log.info("Обновление пользователя: {}, успешно", user.getId());
             userRepository.save(user);
             return true;

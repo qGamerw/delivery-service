@@ -21,7 +21,7 @@ public interface ShiftService {
      * Заканчивает смену курьера
      *
      * @param shift - смена курьера
-     * @return - true  случае успеха
+     * @return - true в случае успеха
      */
     boolean update(Shift shift);
 
@@ -29,7 +29,7 @@ public interface ShiftService {
      * Удаляет смену
      *
      * @param idShift - индификатор смены
-     * @return - true  случае успеха
+     * @return - true в случае успеха
      */
     boolean delete(long idShift);
 
@@ -37,7 +37,7 @@ public interface ShiftService {
      * Возвращает смены пользователя
      *
      * @param idUser - id пользователя
-     * @return - спискок смен
+     * @return - список смен
      */
     List<Shift> findAllShiftsByUser(long idUser);
 

@@ -58,20 +58,20 @@ public class ShiftServiceImpl implements ShiftService {
             shiftRepository.deleteById(idShift);
             return true;
         }
-        log.warn("Удапление провалено");
+        log.warn("Удаление провалено");
         return false;
     }
 
     @Override
     public List<Shift> findAllShiftsByUser(long idUser) {
-        log.info("поиск смен пользователя");
+        log.info("Поиск смен пользователя");
         return shiftRepository.findAllByUserId(idUser);
     }
 
     /**
      * Возвращает id user из security context
      *
-     * @return индификатор пользователя
+     * @return идентификатор пользователя
      */
     private long getUserIdSecurityContext() {
 
