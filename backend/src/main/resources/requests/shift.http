@@ -1,22 +1,21 @@
 POST http://localhost:8080/shifts
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MiIsImlhdCI6MTY5NTgzOTY5OCwiZXhwIjoxNjk1OTI2MDk4fQ.r3mHg0Ytrrv9APZEWUZ2bJjNT9xV0WVrDrYqNIEp7ps
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsImlhdCI6MTY5NTg0MTAyNywiZXhwIjoxNjk1OTI3NDI3fQ.FiGhTTKCLaBE79hnvD7aGg7NorFmiHNobWuq58_2re0
 
 ###
 PUT http://localhost:8080/shifts
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MiIsImlhdCI6MTY5NTgzOTM1MCwiZXhwIjoxNjk1OTI1NzUwfQ.4RMbUDY7hivqTAhPqWEBogiY8mV1jP_Ph88kfV0NnPA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsImlhdCI6MTY5NTg0MTAyNywiZXhwIjoxNjk1OTI3NDI3fQ.FiGhTTKCLaBE79hnvD7aGg7NorFmiHNobWuq58_2re0
 Content-Type: application/json
 
 {
-  "id_shift": 1,
-  "begin_shift" : "2023-09-27 16:03:51",
-  "end_shift": "2023-09-27 16:03:51",
-  "user_id": 1
+  "id": 1,
+  "beginShift" : "2023-09-27 16:03:51",
+  "endShift": "2023-09-27 18:03:51"
 }
 
 ###
 DELETE http://localhost:8080/shifts/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsImlhdCI6MTY5NTgyNTE2NywiZXhwIjoxNjk1OTExNTY3fQ.ZfGdhA1i3JYE4ESJ1UudkIM51AEcV3bTV41MRgqYURg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsImlhdCI6MTY5NTg0MTAyNywiZXhwIjoxNjk1OTI3NDI3fQ.FiGhTTKCLaBE79hnvD7aGg7NorFmiHNobWuq58_2re0
 
 ###
 GET http://localhost:8080/shifts/courier/4
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsImlhdCI6MTY5NTgyNTE2NywiZXhwIjoxNjk1OTExNTY3fQ.ZfGdhA1i3JYE4ESJ1UudkIM51AEcV3bTV41MRgqYURg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsImlhdCI6MTY5NTg0MTAyNywiZXhwIjoxNjk1OTI3NDI3fQ.FiGhTTKCLaBE79hnvD7aGg7NorFmiHNobWuq58_2re0

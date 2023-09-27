@@ -41,8 +41,11 @@ public class ShiftServiceImpl implements ShiftService {
     @Override
     public boolean update(Shift shift) {
         log.info("Обновление смены");
+        User user = new User();
+        user.setId(getUserIdSecurityContext());
         if (shiftRepository.existsById(shift.getId())) {
             log.info("Обновление успешно");
+            shift.setUser(user);
             shiftRepository.save(shift);
             return true;
         }
