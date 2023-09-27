@@ -42,6 +42,9 @@ public class AdministrationServiceImpl implements AdministrationService {
             if (user.getRole() == null) {
                 user.setRole(oldUser.getRole());
             }
+            if (user.getIsNotify() == null) {
+                user.setIsNotify(oldUser.getIsNotify());
+            }
             log.info("Обновление пользователя: {}, успешно", user.getId());
             userRepository.save(user);
             return true;

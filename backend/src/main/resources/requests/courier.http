@@ -4,7 +4,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTg0M
 
 ###
 PUT http://localhost:8080/couriers
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTg0MDQxOCwiZXhwIjoxNjk1OTI2ODE4fQ.NRRawlr4nAAbNB2BAEVQ3nPP-jrhTso_62ELkEOnY5Y
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0NCIsImlhdCI6MTY5NTgzOTA1NCwiZXhwIjoxNjk1OTI1NDU0fQ.ZPC7mVlm1HZGgifLeE-0eNcWHJc9w97_n3t9drKJSdE
 Content-Type: application/json
 
 {

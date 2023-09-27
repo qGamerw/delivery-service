@@ -58,7 +58,7 @@ public class User {
     private BigDecimal longitude;
 
     @Column(name = "notify")
-    private boolean isNotify;
+    private Boolean isNotify;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
