@@ -51,7 +51,7 @@ public class ShiftController {
      * @return - результат запроса
      */
     @PutMapping
-    public ResponseEntity<?> updateCourier(@RequestBody Shift shift) {
+    public ResponseEntity<?> updateShift(@RequestBody Shift shift) {
         log.info("Обновление данных о смене");
 
         if (shiftService.update(shift)) {
@@ -67,7 +67,7 @@ public class ShiftController {
      * @param idShift - индификатор смены
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCourier(@PathVariable("id") long idShift) {
+    public ResponseEntity<?> deleteShift(@PathVariable("id") long idShift) {
         log.info("Удаление смены");
         boolean isDeleted = shiftService.delete(idShift);
 
@@ -85,7 +85,7 @@ public class ShiftController {
      * @return - смены пользователя
      */
     @GetMapping("/courier/{id}")
-    public ResponseEntity<List<Shift>> getAllCouriersData(@PathVariable("id") long idUser) {
+    public ResponseEntity<List<Shift>> getAllCouriersShifts(@PathVariable("id") long idUser) {
         log.info("Получение информации о всех сменах курьера");
         return ResponseEntity.ok().body(shiftService.findAllShiftsByUser(idUser));
 

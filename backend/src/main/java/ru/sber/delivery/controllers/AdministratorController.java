@@ -2,6 +2,7 @@ package ru.sber.delivery.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.delivery.entities.User;
@@ -103,9 +104,9 @@ public class AdministratorController {
      * @return - список курьеров
      */
     @GetMapping("/all-couriers/by-date")
-    public ResponseEntity<List<User>> getAllShifts(@RequestBody LocalDate shiftDate) {
+    public ResponseEntity<List<User>> getAllShifts(@RequestParam("shiftDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate shiftDate) {
         log.info("Получение информации о всех пользователях вышедших на смену в заданный день");
-
+        System.out.println(shiftDate);
         return ResponseEntity.ok().body(administratorService.findUsersByShift(shiftDate));
     }
 

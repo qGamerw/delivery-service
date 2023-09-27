@@ -1,0 +1,28 @@
+GET http://localhost:8080/employees/free-couriers
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTgyMjA1MCwiZXhwIjoxNjk1OTA4NDUwfQ.ojrcsGb99kpZvkGWsFvxF1dk5CeWohwhfZlN2Itc5zw
+
+###
+PUT http://localhost:8080/employees
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTgyMjA1MCwiZXhwIjoxNjk1OTA4NDUwfQ.ojrcsGb99kpZvkGWsFvxF1dk5CeWohwhfZlN2Itc5zw
+Content-Type: application/json
+
+{
+  "id": 4,
+  "username" : "test4",
+  "email": "test4@yandex.ru",
+  "password": "password"
+}
+
+###
+GET http://localhost:8080/employees/nearest-free-courier
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTgyMDMzOCwiZXhwIjoxNjk1OTA2NzM4fQ.vMgNjGxPBS-80ys3lD_bhrPhmR3pGChRVmCKRzS6NbM
+Content-Type: application/json
+
+{
+  "latitude" : "145.6767",
+  "longitude" : "123.3434"
+}
+
+###
+PUT http://localhost:8080/employees/notify/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTgyMjA1MCwiZXhwIjoxNjk1OTA4NDUwfQ.ojrcsGb99kpZvkGWsFvxF1dk5CeWohwhfZlN2Itc5zw

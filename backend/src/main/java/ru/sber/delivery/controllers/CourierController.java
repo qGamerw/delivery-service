@@ -65,7 +65,7 @@ public class CourierController {
      * @param statusCourier - новый статус курьера
      */
     @PutMapping("/status")
-    public ResponseEntity<?> updateCourierStatus(@RequestBody String statusCourier) {
+    public ResponseEntity<?> updateCourierStatus(@RequestParam String statusCourier) {
         log.info("Обновление данных статуса о курьере {}",statusCourier);
 
         if (courierService.updateUserStatus(EStatusCourier.valueOf(statusCourier))){
