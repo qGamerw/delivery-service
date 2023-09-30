@@ -5,6 +5,7 @@ import ru.sber.delivery.entities.User;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Отвечает за работу администратора
@@ -12,7 +13,7 @@ import java.util.List;
 public interface AdministrationService {
 
     /**
-     * Обновляет данные администратора
+     * Обновляет данные пользователя
      * @param user новые данные администратора
      * @return true - в случае успеха
      */
@@ -30,25 +31,18 @@ public interface AdministrationService {
      * @param idUser - id пользователя
      * @return данные о пользователе
      */
-    User getUser(long idUser);
+    Optional<User> findUser(long idUser);
 
     /**
-     * Возвращает информацию о всех пользователях
+     * Возвращает информацию о всех пользователях, кроме администрации
      * @return список пользователей
      */
-    List<User> getAllUsers();
-
-    /**
-     * Возвращает смены пользователя
-     * @param idUser - id пользователя
-     * @return - спискок смен
-     */
-    List<Shift> getShiftsUser(User  idUser);
+    List<User> findAllUsers();
 
     /**
      * Возвращает пользоватлей вышедших на смену в заданный день
      * @param dateShift - день смены
      * @return - Список пользователей
      */
-    List<User> getUsersByShift(LocalDate dateShift);
+    List<User> findUsersByShift(LocalDate dateShift);
 }

@@ -2,6 +2,7 @@ package ru.sber.delivery.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,6 +15,9 @@ import ru.sber.delivery.entities.enum_model.EStatusCourier;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * Пользователь
+ */
 @Entity
 @Data
 @AllArgsConstructor
@@ -38,24 +42,23 @@ public class User {
     private String email;
     @NotBlank
     @Size(max = 120)
+    @JsonIgnore
     private String password;
 
     @Column(name = "date_registration")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotBlank
     private LocalDateTime dateRegistration;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    @NotBlank
     private EStatusCourier status;
 
     private BigDecimal latitude;
     private BigDecimal longitude;
 
     @Column(name = "notify")
-    private boolean isNotify;
+    private Boolean isNotify;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)

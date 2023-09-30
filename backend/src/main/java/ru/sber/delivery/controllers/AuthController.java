@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,8 +82,9 @@ public class AuthController {
         User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
         
-        Role userRole = roleRepository.findByName(ERole.COURIER)
+        Role userRole = roleRepository.findByRole(ERole.COURIER)
                     .orElseThrow(() -> new RuntimeException("Роль не найдена"));
+        user.setDateRegistration(LocalDateTime.now());
         user.setRole(userRole);
         userRepository.save(user);
 

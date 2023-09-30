@@ -1,0 +1,26 @@
+GET http://localhost:8080/administrators/courier/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTg0MDQxOCwiZXhwIjoxNjk1OTI2ODE4fQ.NRRawlr4nAAbNB2BAEVQ3nPP-jrhTso_62ELkEOnY5Y
+
+###
+PUT http://localhost:8080/administrators
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTg0MDQxOCwiZXhwIjoxNjk1OTI2ODE4fQ.NRRawlr4nAAbNB2BAEVQ3nPP-jrhTso_62ELkEOnY5Y
+Content-Type: application/json
+
+{
+  "id": 1,
+  "username" : "test",
+  "email": "test@yandex.ru"
+}
+
+###
+DELETE http://localhost:8080/administrators/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTg0MDQxOCwiZXhwIjoxNjk1OTI2ODE4fQ.NRRawlr4nAAbNB2BAEVQ3nPP-jrhTso_62ELkEOnY5Y
+
+###
+GET http://localhost:8080/administrators/all-couriers
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTg0MDQxOCwiZXhwIjoxNjk1OTI2ODE4fQ.NRRawlr4nAAbNB2BAEVQ3nPP-jrhTso_62ELkEOnY5Y
+
+
+###
+GET http://localhost:8080/administrators/all-couriers/by-date?shiftDate=2023-09-27
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTg0MDQxOCwiZXhwIjoxNjk1OTI2ODE4fQ.NRRawlr4nAAbNB2BAEVQ3nPP-jrhTso_62ELkEOnY5Y

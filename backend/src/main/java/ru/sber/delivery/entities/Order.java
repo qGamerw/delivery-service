@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "orders")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,51 +23,6 @@ public class Order {
     @Column(name = "id_order")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @NotBlank
-    @Size(max = 120)
-    private String description;
-
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20, name = "status_order")
-    @NotBlank
-    private EStatusOrder statusOrder;
-
-    @Column(name="restaurant_latitude")
-    @NotBlank
-    BigDecimal restaurantLatitude;
-
-    @Column(name="restaurant_longitude")
-    @NotBlank
-    BigDecimal restaurantLongitude;
-
-    @Column(name="destination_latitude")
-    @NotBlank
-    BigDecimal destinationLatitude;
-
-    @Column(name="destination_longitude")
-    @NotBlank
-    BigDecimal destinationLongitude;
-
-    @Column(name = "pick_up_time")
-    @NotBlank
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime pickUpTime;
-
-    @Column(name = "delivery_time")
-    @NotBlank
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime deliveryTime;
-
-    @NotBlank
-    @Size(max = 11)
-    String clientPhone;
-
-    @NotBlank
-    @Size(max = 50)
-    String clientName;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

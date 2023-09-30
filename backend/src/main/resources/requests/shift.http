@@ -1,0 +1,21 @@
+POST http://localhost:8080/shifts
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsImlhdCI6MTY5NTg0MTAyNywiZXhwIjoxNjk1OTI3NDI3fQ.FiGhTTKCLaBE79hnvD7aGg7NorFmiHNobWuq58_2re0
+
+###
+PUT http://localhost:8080/shifts
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsImlhdCI6MTY5NTg0MTAyNywiZXhwIjoxNjk1OTI3NDI3fQ.FiGhTTKCLaBE79hnvD7aGg7NorFmiHNobWuq58_2re0
+Content-Type: application/json
+
+{
+  "id": 1,
+  "beginShift" : "2023-09-27 16:03:51",
+  "endShift": "2023-09-27 18:03:51"
+}
+
+###
+DELETE http://localhost:8080/shifts/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsImlhdCI6MTY5NTg0MTAyNywiZXhwIjoxNjk1OTI3NDI3fQ.FiGhTTKCLaBE79hnvD7aGg7NorFmiHNobWuq58_2re0
+
+###
+GET http://localhost:8080/shifts/courier/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsImlhdCI6MTY5NTg0MTAyNywiZXhwIjoxNjk1OTI3NDI3fQ.FiGhTTKCLaBE79hnvD7aGg7NorFmiHNobWuq58_2re0
