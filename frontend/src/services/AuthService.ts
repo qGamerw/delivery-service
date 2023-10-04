@@ -1,4 +1,12 @@
 import axios from "axios";
+import { loginUser, logoutUser } from "../slices/userSlice";
+import { Dispatch } from "redux";
+
+interface Registration {
+    username: string;
+    email: string;
+    password: string;
+  }
 
 interface Login {
     username: string;
@@ -11,7 +19,16 @@ interface User {
 
 const API_URL_CART = "/api/auth/";
 
-const login = async (login: Login): Promise<User> => {
+const register = (registration: Registration) => {
+    const { username, email, password } = registration;
+    return axios.post(API_URL_CART + "signup", {
+      username,
+      email,
+      password,
+    });
+  };
+
+const login = async (login: Login, dispatch: Dispatch): Promise<User> => {
     const {username, password} = login;
 
     let response = await axios
@@ -20,18 +37,17 @@ const login = async (login: Login): Promise<User> => {
             password,
         });
     console.log(response);
-    if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-    }
+    dispatch(loginUser(response.data));
     return response.data;
 };
 
-const logout = (): void => {
+const logout = (dispatch: Dispatch): void => {
     console.log("logout");
-    localStorage.removeItem("user");
+    dispatch(logoutUser());
 };
 
 const authService = {
+    register,
     login,
     logout,
 };
