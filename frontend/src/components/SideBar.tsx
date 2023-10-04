@@ -1,6 +1,8 @@
 import React from 'react';
 import { Drawer, Menu } from 'antd';
-import { Link, useLocation } from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
+import authService from "../services/authService";
+import {useDispatch} from "react-redux";
 
 
 interface SidebarProps {
@@ -10,9 +12,15 @@ interface SidebarProps {
 
 const SideBar: React.FC<SidebarProps> = ({ visible, onClose }) => {
   const location = useLocation();
-  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleMenuItemClick = () => {
     onClose();
+  };
+
+  const logout = () => {
+    authService.logout(dispatch);
+    navigate("/login")
   };
 
   return (
@@ -39,6 +47,9 @@ const SideBar: React.FC<SidebarProps> = ({ visible, onClose }) => {
         </Menu.Item>
         <Menu.Item key="/info">
           <Link to="/info">Информация о курьере</Link>
+        </Menu.Item>
+        <Menu.Item key="/logout" onClick = {logout}>
+          Выход из аккаунта
         </Menu.Item>
       </Menu>
     </Drawer>

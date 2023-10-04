@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Input, Button, Form, message} from 'antd';
-import authService from "../services/AuthService";
+import authService from "../services/authService";
 import {loginUser} from "../slices/userSlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
