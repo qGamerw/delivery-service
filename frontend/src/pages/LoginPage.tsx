@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { Input, Button, Form } from 'antd';
+import {Input, Button, Form, message} from 'antd';
+import authService from "../services/AuthService";
+import {loginUser} from "../slices/userSlice";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
 
 interface LoginProps {
     username: string;
@@ -12,6 +16,9 @@ const LoginPage: React.FC = () => {
         password: '',
     });
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement>,
         field: 'username' | 'password'
@@ -23,15 +30,21 @@ const LoginPage: React.FC = () => {
     };
 
     const handleLogin = () => {
-        console.log('Logging in with:', loginData);
+        authService.login(loginData, dispatch).then((user) => {
+            console.log(user)
+            navigate("/info")
+        }, (error) => {
+            const _content = (error.response && error.response.data)
+            console.log(_content);
+            message.error("Неправильный логин или пароль");
+        })
     };
 
     return (
-        <div style={{alignItems: "center"}}>
-            <h1 style={{paddingLeft : 8}}>Login Page</h1>
+        <div style={{paddingLeft : 12}}>
+            <h1>Вход</h1>
             <Form>
-
-                <Form.Item  style={{paddingRight : 8, paddingLeft : 8}}>
+                <Form.Item  style={{paddingRight : 8}}>
                     <h3>Email</h3>
                     <Input
                         style={{ maxWidth: '500px' }}
@@ -42,8 +55,8 @@ const LoginPage: React.FC = () => {
                     />
                 </Form.Item>
 
-                <Form.Item style={{paddingRight : 8, paddingLeft : 8}}>
-                    <h3>Password</h3>
+                <Form.Item style={{paddingRight : 8}}>
+                    <h3>Пароль</h3>
                     <Input.Password
                         style={{ maxWidth: '500px' }}
                         maxLength={30}
@@ -53,7 +66,7 @@ const LoginPage: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item>
-                    <Button type="primary" onClick={handleLogin} style={{margin : 8}}>
+                    <Button type="primary" onClick={handleLogin}>
                         Login
                     </Button>
                 </Form.Item>

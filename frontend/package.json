@@ -48,5 +48,6 @@
   },
   "devDependencies": {
     "axios": "^1.5.1"
-  }
+  },
+  "proxy": "http://localhost:8080"
 }

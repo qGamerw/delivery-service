@@ -1,21 +1,13 @@
-interface User {
-    accessToken: string;
-}
-
-const getUserFromLocalStorage = (): any | null => {
-    const userString = localStorage.getItem('user');
-    if (userString) {
-        return JSON.parse(userString);
+export default function authHeader() {
+    const userStr = localStorage.getItem("user");
+    let user = null;
+    if (userStr) {
+        user = JSON.parse(userStr);
     }
-    return null;
-};
-export default function authHeader(): Record<string, string> {
-    let user: User | null;
-    user = getUserFromLocalStorage();
 
     if (user && user.accessToken) {
-        return { Authorization: "Bearer " + user.accessToken };
+        return { Authorization: 'Bearer ' + user.accessToken };
     } else {
-        return {};
+        return { Authorization: '' };
     }
 }
