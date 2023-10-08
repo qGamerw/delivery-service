@@ -1,46 +1,45 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface UserState {
-    user: any | null;
-    isAuth: boolean;
+interface Role {
+  id: number;
+  role: string;
 }
-const getUserFromLocalStorage = (): any | null => {
-    const userString = localStorage.getItem('user');
-    if (userString) {
-        return JSON.parse(userString);
-    }
-    return null;
-};
 
-const initialState: UserState = {
-    user: getUserFromLocalStorage(),
-    isAuth: false,
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  dateRegistration: string;
+  status: string;
+  latitude: number;
+  longitude: number;
+  isNotify: boolean;
+  role: Role;
+}
+
+interface UserSliceState {
+  currentUser: User | null;
+  userList: User[];
+}
+
+const initialState: UserSliceState = {
+  currentUser: null,
+  userList: [],
 };
 
 const userSlice = createSlice({
-    name: 'user',
-    initialState,
-    reducers: {
-        set: (state, action: PayloadAction<any>) => {
-            state.user = action.payload;
-        },
-        loginUser: (state, action: PayloadAction<any>) => {
-            state.isAuth = true;
-            state.user = action.payload;
-
-            if (action.payload.accessToken) {
-                localStorage.setItem('user', JSON.stringify(action.payload));
-            }
-        },
-        logoutUser: (state) => {
-            state.isAuth = false;
-            state.user = null;
-
-            localStorage.removeItem('user');
-        },
+  name: "user",
+  initialState,
+  reducers: {
+    setCurrentUser: (state, action: PayloadAction<User | null>) => {
+      state.currentUser = action.payload;
     },
+    setUserList: (state, action: PayloadAction<User[]>) => {
+      state.userList = action.payload;
+    },
+  },
 });
 
-export const { set, loginUser, logoutUser } = userSlice.actions;
+export const { setCurrentUser, setUserList } = userSlice.actions;
 
 export default userSlice.reducer;
