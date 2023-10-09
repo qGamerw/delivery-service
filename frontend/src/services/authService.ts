@@ -1,5 +1,5 @@
 import axios from "axios";
-import { loginUser, logoutUser } from "../slices/userSlice";
+import { loginUser, logoutUser } from "../slices/authSlice";
 import { Dispatch } from "redux";
 
 interface Registration {
@@ -17,7 +17,7 @@ interface User {
     accessToken: string;
 }
 
-const API_URL = "http://localhost:8080/api/auth/"
+const API_URL = "/api/auth/"
 
 const register = (registration: Registration) => {
     const { username, email, password } = registration;
