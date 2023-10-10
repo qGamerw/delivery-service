@@ -3,6 +3,12 @@ import authHeader from "./authHeader";
 import { Dispatch } from "redux";
 import { setCurrentOrder, setAllOrders } from "../slices/orderSlice";
 
+interface Dishes {
+  orderId:number;
+  dishId:number;
+  dishName:string;
+}
+
 interface Order {
   id: number | null;
   courierId: number | null;
@@ -10,18 +16,18 @@ interface Order {
   description: string | null;
   clientPhone: number | null;
   eStatusOrders: string | null;
-  orderTime: string | null;
+  orderTime: string;
   address: string | null;
   branchAddress: string | null;
   flat: number | null;
   frontDoor: number | null;
   floor: number | null;
   weight: number | null;
-  endCookingTime: string | null;
-  dishesOrders: any[];
+  endCookingTime: string;
+  dishesOrders: Dishes[];
 }
 
-const API_URL_ORDER = "/api/orders";
+const API_URL_ORDER = "/orders";
 
 const updateOrder = async (orderData: Order, dispatch: Dispatch) => {
   const headers = authHeader();
@@ -61,6 +67,7 @@ const getAwaitingDeliveryOrders = async (dispatch: Dispatch) => {
   try {
     const response = await axios.get(`${API_URL_ORDER}/awaiting-delivery`, { headers });
     const awaitingDeliveryOrders = response.data;
+    console.log(response.data)
 
     dispatch(setAllOrders(awaitingDeliveryOrders));
 

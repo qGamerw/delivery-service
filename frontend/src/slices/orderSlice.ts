@@ -1,24 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Order {
+export interface Order {
   id: number | null;
   courierId: number | null;
   clientName: string | null;
   description: string | null;
   clientPhone: number | null;
   eStatusOrders: string | null;
-  orderTime: string | null;
+  orderTime: string;
   address: string | null;
   branchAddress: string | null;
   flat: number | null;
   frontDoor: number | null;
   floor: number | null;
   weight: number | null;
-  endCookingTime: string | null; 
+  endCookingTime: string ;
   dishesOrders: any[];
 }
 
-interface OrderSliceState {
+export interface OrderSliceState {
   currentOrder: Order | null;
   allOrders: Order[];
 }
