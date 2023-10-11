@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Order {
-  id: number | null;
+  id: number;
   courierId: number | null;
   clientName: string | null;
   description: string | null;
   clientPhone: number | null;
-  eStatusOrders: string | null;
+  estatusOrders: string | null;
   orderTime: string;
   address: string | null;
   branchAddress: string | null;

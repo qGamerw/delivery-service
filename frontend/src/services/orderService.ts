@@ -10,12 +10,12 @@ interface Dishes {
 }
 
 interface Order {
-  id: number | null;
+  id: number;
   courierId: number | null;
   clientName: string | null;
   description: string | null;
   clientPhone: number | null;
-  eStatusOrders: string | null;
+  estatusOrders: string | null;
   orderTime: string;
   address: string | null;
   branchAddress: string | null;
@@ -45,11 +45,11 @@ const updateOrder = async (orderData: Order, dispatch: Dispatch) => {
   }
 };
 
-const assignOrderToCourier = async (orderData: Order, dispatch: Dispatch) => {
+const assignOrderToCourier = async (order: { courierId: any; id: number }, dispatch: Dispatch) => {
   const headers = authHeader();
 
   try {
-    const response = await axios.put(`${API_URL_ORDER}/courier`, orderData, { headers });
+    const response = await axios.put(`${API_URL_ORDER}/courier`, order, { headers });
     const assignedOrder = response.data;
 
     dispatch(setCurrentOrder(assignedOrder));
