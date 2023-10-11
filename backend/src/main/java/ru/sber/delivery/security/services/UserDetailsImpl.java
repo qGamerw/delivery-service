@@ -34,6 +34,10 @@ public class UserDetailsImpl implements UserDetails {
 
     private EStatusCourier status;
 
+    private BigDecimal latitude;
+    private BigDecimal longitude;
+    private Boolean isNotify;
+
 
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -46,6 +50,9 @@ public class UserDetailsImpl implements UserDetails {
                 user.getPassword(),
                 user.getDateRegistration(),
                 user.getStatus(),
+                user.getLatitude(),
+                user.getLongitude(),
+                user.getIsNotify(),
                 authorities);
     }
 

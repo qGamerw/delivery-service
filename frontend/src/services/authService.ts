@@ -13,7 +13,21 @@ interface Login {
     password: string;
 }
 
+interface Role {
+    id: number;
+    role: string;
+}
+
 interface User {
+    id: number;
+    username: string;
+    email: string;
+    dateRegistration: string;
+    status: string;
+    latitude: number;
+    longitude: number;
+    isNotify: boolean;
+    role: Role;
     accessToken: string;
 }
 
