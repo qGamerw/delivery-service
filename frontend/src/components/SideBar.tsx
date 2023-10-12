@@ -38,15 +38,19 @@ const SideBar: React.FC<SidebarProps> = ({ visible, onClose }) => {
         <Menu.Item key="/">
           <Link to="/">Карта</Link>
         </Menu.Item>
-        <Menu.Item key="/orders">
-          <Link to="/orders">Все заказы</Link>
-        </Menu.Item>
-        <Menu.Item key="/active-orders">
-          <Link to="/active-orders">Активные заказы</Link>
-        </Menu.Item>
-        <Menu.Item key="/info">
-          <Link to="/info">Информация о курьере</Link>
-        </Menu.Item>
+        {isAuth && (
+          <>
+            <Menu.Item key="/orders">
+              <Link to="/orders">Все заказы</Link>
+            </Menu.Item>
+            <Menu.Item key="/active-orders">
+              <Link to="/active-orders">Активные заказы</Link>
+            </Menu.Item>
+            <Menu.Item key="/info">
+              <Link to="/info">Информация о курьере</Link>
+            </Menu.Item>
+          </>
+        )}
         {isAuth ? (
           <Menu.Item key="/logout" onClick={logout}>
             Выход из аккаунта
