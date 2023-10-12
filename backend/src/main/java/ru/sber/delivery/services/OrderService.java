@@ -32,15 +32,15 @@ public interface OrderService {
     /**
      * Ищет заказ по id
      *
-     * @param id идентификатор заказа
      * @return заказ
      */
-    Optional<?> findOrderById(long id);
+    Optional<?> findOrderById();
     /**
      * Возвращает все заказы которые брал курьер
      *
-     * @param id идентификатор курьера
      * @return список заказов курьера
      */
-    List<?> findOrdersByCourierId(long id);
+    List<?> findOrdersByCourierId();
+
+    List<?> getOrdersIsDelivering();
 }

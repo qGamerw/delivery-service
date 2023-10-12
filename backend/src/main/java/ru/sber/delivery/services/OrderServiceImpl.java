@@ -1,8 +1,11 @@
 package ru.sber.delivery.services;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ru.sber.delivery.exceptions.UserNotFound;
 import ru.sber.delivery.order.OrderFeign;
+import ru.sber.delivery.security.services.UserDetailsImpl;
 
 import java.util.List;
 import java.util.Objects;
@@ -39,16 +42,37 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<?> findOrderById(long id) {
-        if (orderFeign.getOrderById(id).hasBody()) {
-            return Optional.of(Objects.requireNonNull(orderFeign.getOrderById(id).getBody()));
+    public Optional<?> findOrderById() {
+        if (orderFeign.getOrderById(getUserIdSecurityContext()).hasBody()) {
+            return Optional.of(Objects.requireNonNull(orderFeign.getOrderById(getUserIdSecurityContext()).getBody()));
         }
         return Optional.empty();
 
     }
 
     @Override
-    public List<?> findOrdersByCourierId(long id) {
-        return orderFeign.getAllOrdersByCourierId(id).getBody();
+    public List<?> findOrdersByCourierId() {
+        return orderFeign.getAllOrdersByCourierId(getUserIdSecurityContext()).getBody();
+    }
+
+    @Override
+    public List<?> getOrdersIsDelivering() {
+        return orderFeign.getOrdersIsDelivering(getUserIdSecurityContext()).getBody();
+    }
+
+    /**
+            * Возвращает id user из security context
+     *
+             * @return идентификатор пользователя
+     */
+    private long getUserIdSecurityContext() {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetailsImpl) {
+            return ((UserDetailsImpl) principal).getId();
+        } else {
+            throw new UserNotFound("Пользователь не найден");
+        }
     }
 }

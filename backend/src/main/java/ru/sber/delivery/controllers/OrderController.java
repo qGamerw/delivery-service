@@ -53,12 +53,11 @@ public class OrderController {
     /**
      * Возвращает заказ по id
      *
-     * @param id заказа
      * @return заказ
      */
     @GetMapping("/{idOrder}")
-    ResponseEntity<?> getOrderById(@PathVariable("idOrder") long id) {
-        return ResponseEntity.ok(orderService.findOrderById(id));
+    ResponseEntity<?> getOrderById() {
+        return ResponseEntity.ok(orderService.findOrderById());
     }
 
     ;
@@ -66,11 +65,10 @@ public class OrderController {
     /**
      * Возвращает все заказы курьера
      *
-     * @param id курьера
      * @return заказы курьера
      */
-    @GetMapping("/courier/{idCourier}")
-    ResponseEntity<List<?>> getAllOrdersByCourierId(@PathVariable("idCourier") long id) {
-        return ResponseEntity.ok(orderService.findOrdersByCourierId(id));
+    @GetMapping
+    ResponseEntity<List<?>> getAllOrdersByCourierId() {
+        return ResponseEntity.ok(orderService.findOrdersByCourierId());
     }
 }
