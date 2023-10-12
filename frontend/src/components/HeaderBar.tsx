@@ -26,7 +26,7 @@ const HeaderBar: React.FC = () => {
               width: '40px',
               height: '40px',
               float: 'right',
-              backgroundColor: '#e3e3e3',
+              backgroundColor: '#EFEFEF',
               display: 'flex',
               justifyContent: 'center',
               borderRadius: '50%', 

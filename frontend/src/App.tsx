@@ -5,6 +5,7 @@ import MainPage from "./pages/MainPage";
 import LoginPage from "./pages/LoginPage";
 import HeaderBar from "./components/HeaderBar";
 import ListOrderPage from "./pages/ListOrderPage";
+import UserInfoPage from "./pages/UserInfoPage";
 const App: React.FC = () => {
     return (
         <div>
@@ -13,6 +14,7 @@ const App: React.FC = () => {
                 <Route path="/" element={<MainPage/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/orders" element={<ListOrderPage/>}/>
+                <Route path="/info" element={<UserInfoPage/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>
             </Routes>
         </div>
