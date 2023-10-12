@@ -18,6 +18,8 @@ public interface OrderFeign {
     ResponseEntity<?> updateOrderCourier(@RequestBody Object order);
     @GetMapping("orders/awaiting-delivery")
     ResponseEntity<List<?>> findActiveOrder();
+    @GetMapping("orders/delivering")
+    ResponseEntity<List<?>> findAllActiveOrderForCourier();
     @GetMapping("orders/{idOrder}")
     ResponseEntity<?> getOrderById(@PathVariable("idOrder") long id);
     @GetMapping("orders/courier/{idCourier}")

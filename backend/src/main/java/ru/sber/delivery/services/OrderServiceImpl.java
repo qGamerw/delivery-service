@@ -42,6 +42,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<?> findAllActiveOrderForCourier() {
+        return orderFeign.findAllActiveOrderForCourier().getBody();
+    }
+
+    @Override
     public Optional<?> findOrderById() {
         if (orderFeign.getOrderById(getUserIdSecurityContext()).hasBody()) {
             return Optional.of(Objects.requireNonNull(orderFeign.getOrderById(getUserIdSecurityContext()).getBody()));

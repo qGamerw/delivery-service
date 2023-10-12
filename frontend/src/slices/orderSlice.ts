@@ -6,7 +6,7 @@ export interface Order {
   clientName: string | null;
   description: string | null;
   clientPhone: number | null;
-  estatusOrders: string | null;
+  status: string | null;
   orderTime: string;
   address: string | null;
   branchAddress: string | null;

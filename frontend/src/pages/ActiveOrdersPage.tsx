@@ -35,7 +35,7 @@ const StyledCard = styled(Card)`
 
 const { Panel } = Collapse;
 
-const ListOrderPage: React.FC = () => {
+const ActiveOrdersPage: React.FC = () => {
     const dispatch = useDispatch();
     const allOrders = useSelector((store: RootState) => store.order.allOrders);
     const user = useSelector((store: RootState) => store.auth.user);
@@ -47,7 +47,7 @@ const ListOrderPage: React.FC = () => {
     const currentOrders = allOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
     useEffect(() => {
-        orderService.getAwaitingDeliveryOrders(dispatch);
+        orderService.getActiveDeliveryOrders(dispatch);
     }, []);
 
     const [expandedPanel, setExpandedPanel] = useState('');
@@ -78,11 +78,6 @@ const ListOrderPage: React.FC = () => {
                 {currentOrders.map((order) => (
                     <StyledCard title={`Order № ${order.id}`} key={order.id}>
                         <div>
-                            <p>
-                                <strong>Cooking Time:</strong> {order.orderTime
-                                ? new Date(order.endCookingTime).toLocaleString('ru-RU')
-                                : 'No data'}
-                            </p>
                             <p>
                                 <strong>Delivery Time:</strong>{' '}
                                 {new Date(order.orderTime).toLocaleString('ru-RU')}
@@ -121,31 +116,12 @@ const ListOrderPage: React.FC = () => {
                                 </Panel>
                             </Collapse>
                         </div>
-                        <div
-                            style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}
-                        >
-                            <Button
-                                type="primary"
-                                style={{ width: '100%' }}
-                                onClick={() => handleClickAcceptOrder(order.id)}
-                            >
-                                Accept Order
-                            </Button>
-                        </div>
                     </StyledCard>
                 ))}
             </CardsContainer>
-            <PaginationWrapper>
-                <Pagination
-                    current={currentPage}
-                    total={allOrders.length}
-                    defaultPageSize={ordersPerPage}
-                    onChange={handlePageChange}
-                />
-            </PaginationWrapper>
         </Container>
     );
 };
 
 
-export default ListOrderPage;
+export default ActiveOrdersPage;

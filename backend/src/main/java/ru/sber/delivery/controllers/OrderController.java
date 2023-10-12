@@ -31,6 +31,16 @@ public class OrderController {
     }
 
     /**
+     * Возвращает принятые заказы
+     *
+     * @return список заказов
+     */
+    @GetMapping("/delivering")
+    public ResponseEntity<List<?>> getActiveOrderForCourier() {
+        return ResponseEntity.ok(orderService.findAllActiveOrderForCourier());
+    }
+
+    /**
      * Устанавливает курьера на заказ
      *
      * @param order содержит id курьера и id заказа

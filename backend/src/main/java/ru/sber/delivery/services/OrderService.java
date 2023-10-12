@@ -28,6 +28,12 @@ public interface OrderService {
      * @return список заказов
      */
     List<?> findAllActiveOrder();
+    /**
+     * Ищет список заказов которые доставляются
+     *
+     * @return список заказов
+     */
+    List<?> findAllActiveOrderForCourier();
 
     /**
      * Ищет заказ по id

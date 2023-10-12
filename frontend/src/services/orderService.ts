@@ -15,7 +15,7 @@ interface Order {
   clientName: string | null;
   description: string | null;
   clientPhone: number | null;
-  estatusOrders: string | null;
+  status: string | null;
   orderTime: string;
   address: string | null;
   branchAddress: string | null;
@@ -78,6 +78,23 @@ const getAwaitingDeliveryOrders = async (dispatch: Dispatch) => {
   }
 };
 
+const getActiveDeliveryOrders = async (dispatch: Dispatch) => {
+  const headers = authHeader();
+
+  try {
+    const response = await axios.get(`${API_URL_ORDER}/delivering`, { headers });
+    const activeDeliveryOrders = response.data;
+    console.log(response.data)
+
+    dispatch(setAllOrders(activeDeliveryOrders));
+
+    return activeDeliveryOrders;
+  } catch (error) {
+    console.error("Ошибка при получении доставляющихся заказов:", error);
+    throw error;
+  }
+};
+
 const getOrderById = async (orderId: number, dispatch: Dispatch) => {
   const headers = authHeader();
 
@@ -117,6 +134,7 @@ const orderService = {
   updateOrder,
   assignOrderToCourier,
   getAwaitingDeliveryOrders,
+  getActiveDeliveryOrders,
   getOrderById,
   getOrdersForCourier,
 };

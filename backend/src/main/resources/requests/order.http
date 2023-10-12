@@ -26,6 +26,11 @@ GET localhost:8081/orders/awaiting-delivery
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk2OTIyMTc3LCJleHAiOjE2OTcwMDg1Nzd9.6WluAYxx_EecktPvMvNyLOn3DBTf6-JDqDDJnivyjIE
 
 ###
+
+GET localhost:8081/orders/delivering
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk2OTIyMTc3LCJleHAiOjE2OTcwMDg1Nzd9.6WluAYxx_EecktPvMvNyLOn3DBTf6-JDqDDJnivyjIE
+
+###
 GET localhost:8080/orders/2
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4NDMwOTgsImV4cCI6MTY5NTkyOTQ5OH0.nhsPlsgDeoC2dhtoAjsa-t876rPo1WtDTyR6BmHB_J0
 
