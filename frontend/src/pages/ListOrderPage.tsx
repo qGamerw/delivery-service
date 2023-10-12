@@ -38,7 +38,7 @@ const { Panel } = Collapse;
 const ListOrderPage: React.FC = () => {
     const dispatch = useDispatch();
     const allOrders = useSelector((store: RootState) => store.order.allOrders);
-    const user = useSelector((store: RootState) => store.user.currentUser);
+    const user = useSelector((store: RootState) => store.auth.user);
 
     const [currentPage, setCurrentPage] = useState(1);
     const ordersPerPage = 5;
@@ -121,8 +121,14 @@ const ListOrderPage: React.FC = () => {
                                 </Panel>
                             </Collapse>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
-                            <Button type="primary" style={{ width: '100%' }} onClick={() => handleClickAcceptOrder(order.id)}>
+                        <div
+                            style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}
+                        >
+                            <Button
+                                type="primary"
+                                style={{ width: '100%' }}
+                                onClick={() => handleClickAcceptOrder(order.id)}
+                            >
                                 Accept Order
                             </Button>
                         </div>
@@ -140,5 +146,6 @@ const ListOrderPage: React.FC = () => {
         </Container>
     );
 };
+
 
 export default ListOrderPage;
