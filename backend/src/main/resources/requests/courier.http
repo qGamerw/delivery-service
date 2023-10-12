@@ -1,6 +1,5 @@
-GET http://localhost:8080/couriers
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5NTg0MDQxOCwiZXhwIjoxNjk1OTI2ODE4fQ.NRRawlr4nAAbNB2BAEVQ3nPP-jrhTso_62ELkEOnY5Y
-
+GET http://localhost:8081/couriers
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MiIsImlhdCI6MTY5NzEyMDI0OCwiZXhwIjoxNjk3MjA2NjQ4fQ.B0bhIZrOKvMFs4iB6sQREL6CeqDsFEHwHzt1gl7aE3o
 
 ###
 PUT http://localhost:8080/couriers

@@ -18,6 +18,10 @@ public class SignupRequest {
     @Email
     private String email;
 
+    @NotBlank
+    @Size(min = 11, max = 12)
+    private String phoneNumber;
+
     private Set<String> role;
 
     @NotBlank
