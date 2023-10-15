@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Button, Collapse, Pagination } from 'antd';
 import styled from 'styled-components';
@@ -36,20 +36,6 @@ const StyledCard = styled(Card)`
 const { Panel } = Collapse;
 
 const ListOrderPage: React.FC = () => {
-    const dispatch = useDispatch();
-    const allOrders = useSelector((store: RootState) => store.order.allOrders);
-    const user = useSelector((store: RootState) => store.auth.user);
-
-    const [currentPage, setCurrentPage] = useState(1);
-    const ordersPerPage = 5;
-    const indexOfLastOrder = currentPage * ordersPerPage;
-    const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-    const currentOrders = allOrders.slice(indexOfFirstOrder, indexOfLastOrder);
-
-    useEffect(() => {
-        orderService.getAwaitingDeliveryOrders(dispatch);
-    }, []);
-
     const [expandedPanel, setExpandedPanel] = useState('');
 
     const handleCollapseChange = (key: string | string[]) => {
@@ -60,10 +46,6 @@ const ListOrderPage: React.FC = () => {
         }
     };
 
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
-
     const handleClickAcceptOrder = (idOrder:number) => {
         console.log(user);
         if (user) {
@@ -72,10 +54,49 @@ const ListOrderPage: React.FC = () => {
         }
     };
 
+
+    const dispatch = useDispatch();
+    const allOrders = useSelector((store: RootState) => store.order.allOrders);
+    const user = useSelector((store: RootState) => store.auth.user);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const isLoading = useRef(false);
+
+    const loadMoreOrders = () => {
+        if (!isLoading.current) {
+            isLoading.current = true;
+            orderService.getAwaitingDeliveryOrders(currentPage - 1, dispatch).then((newOrders) => {
+                if (newOrders.length > 0) {
+                    setCurrentPage((prevPage) => prevPage + 1);
+                }
+                isLoading.current = false;
+            });
+        }
+    };
+
+    useEffect(() => {
+        loadMoreOrders();
+    }, []);
+
+    const handleScroll = () => {
+        if (
+            window.innerHeight + document.documentElement.scrollTop ===
+            document.documentElement.offsetHeight
+        ) {
+            loadMoreOrders();
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [currentPage]);
+
+
     return (
         <Container>
             <CardsContainer>
-                {currentOrders.map((order) => (
+                {allOrders.map((order) => (
                     <StyledCard title={`Order № ${order.id}`} key={order.id}>
                         <div>
                             <p>
@@ -135,14 +156,6 @@ const ListOrderPage: React.FC = () => {
                     </StyledCard>
                 ))}
             </CardsContainer>
-            <PaginationWrapper>
-                <Pagination
-                    current={currentPage}
-                    total={allOrders.length}
-                    defaultPageSize={ordersPerPage}
-                    onChange={handlePageChange}
-                />
-            </PaginationWrapper>
         </Container>
     );
 };

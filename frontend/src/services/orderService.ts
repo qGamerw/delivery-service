@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./authHeader";
 import { Dispatch } from "redux";
-import { setCurrentOrder, setAllOrders } from "../slices/orderSlice";
+import { setCurrentOrder, setAllOrders, concatenateAllOrders } from "../slices/orderSlice";
 
 interface Dishes {
   orderId:number;
@@ -61,15 +61,15 @@ const assignOrderToCourier = async (order: { courierId: any; id: number }, dispa
   }
 };
 
-const getAwaitingDeliveryOrders = async (dispatch: Dispatch) => {
+const getAwaitingDeliveryOrders = async (page: number, dispatch: Dispatch) => {
   const headers = authHeader();
 
   try {
-    const response = await axios.get(`${API_URL_ORDER}/awaiting-delivery`, { headers });
-    const awaitingDeliveryOrders = response.data;
-    console.log(response.data)
+    const response = await axios.get(`${API_URL_ORDER}/awaiting-delivery?page=${page}`, { headers });
+    const awaitingDeliveryOrders = response.data.content;
+    console.log(response.data.content)
 
-    dispatch(setAllOrders(awaitingDeliveryOrders));
+    dispatch(concatenateAllOrders(awaitingDeliveryOrders));
 
     return awaitingDeliveryOrders;
   } catch (error) {
@@ -82,7 +82,7 @@ const getActiveDeliveryOrders = async (dispatch: Dispatch) => {
   const headers = authHeader();
 
   try {
-    const response = await axios.get(`${API_URL_ORDER}/delivering`, { headers });
+    const response = await axios.get(`${API_URL_ORDER}`, { headers });
     const activeDeliveryOrders = response.data;
     console.log(response.data)
 

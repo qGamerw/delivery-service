@@ -1,5 +1,6 @@
 package ru.sber.delivery.services;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -22,18 +23,13 @@ public interface OrderService {
      * @return ответ
      */
     ResponseEntity<?> updateOrderCourierId(Object order);
+    
     /**
-     * Ищет список заказов которые готовятся или уже готовы, но не доставляются
+     * Ищет список заказов которые готовятся или уже готовы, но не доставляются, ограниченный страницей
      *
      * @return список заказов
      */
-    List<?> findAllActiveOrder();
-    /**
-     * Ищет список заказов которые доставляются
-     *
-     * @return список заказов
-     */
-    List<?> findAllActiveOrderForCourier();
+    Page<?> findAllActiveOrdersByPage(int page, int pageSize);
 
     /**
      * Ищет заказ по id

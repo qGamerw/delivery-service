@@ -35,12 +35,17 @@ const orderSlice = createSlice({
     setCurrentOrder: (state, action: PayloadAction<Order | null>) => {
       state.currentOrder = action.payload;
     },
+    concatenateAllOrders: (state, action: PayloadAction<Order[]>) => {
+      state.allOrders = [ ...state.allOrders, ...action.payload];
+    },
     setAllOrders: (state, action: PayloadAction<Order[]>) => {
       state.allOrders = action.payload;
     },
   },
 });
 
-export const { setCurrentOrder, setAllOrders } = orderSlice.actions;
+export const { setCurrentOrder, 
+              setAllOrders, 
+              concatenateAllOrders } = orderSlice.actions;
 
 export default orderSlice.reducer;

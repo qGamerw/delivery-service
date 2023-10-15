@@ -1,5 +1,6 @@
 package ru.sber.delivery.services;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,6 @@ public class OrderServiceImpl implements OrderService {
     public OrderServiceImpl(OrderFeign orderFeign) {
         this.orderFeign = orderFeign;
     }
-
-    public ResponseEntity<List<?>> findActiveCourier() {
-        return orderFeign.findActiveOrder();
-    }
-
     @Override
     public ResponseEntity<?> updateOrderStatus(Object order) {
         return orderFeign.updateOrderStatus(order);
@@ -37,13 +33,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<?> findAllActiveOrder() {
-        return orderFeign.findActiveOrder().getBody();
-    }
-
-    @Override
-    public List<?> findAllActiveOrderForCourier() {
-        return orderFeign.findAllActiveOrderForCourier().getBody();
+    public Page<?> findAllActiveOrdersByPage(int page, int pageSize) {
+        return orderFeign.findAllActiveOrdersByPage(page, pageSize).getBody();
     }
 
     @Override

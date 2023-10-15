@@ -40,12 +40,6 @@ const ActiveOrdersPage: React.FC = () => {
     const allOrders = useSelector((store: RootState) => store.order.allOrders);
     const user = useSelector((store: RootState) => store.auth.user);
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const ordersPerPage = 5;
-    const indexOfLastOrder = currentPage * ordersPerPage;
-    const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-    const currentOrders = allOrders.slice(indexOfFirstOrder, indexOfLastOrder);
-
     useEffect(() => {
         orderService.getActiveDeliveryOrders(dispatch);
     }, []);
@@ -60,10 +54,6 @@ const ActiveOrdersPage: React.FC = () => {
         }
     };
 
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
-
     const handleClickAcceptOrder = (idOrder:number) => {
         console.log(user);
         if (user) {
@@ -75,7 +65,7 @@ const ActiveOrdersPage: React.FC = () => {
     return (
         <Container>
             <CardsContainer>
-                {currentOrders.map((order) => (
+                {allOrders.map((order) => (
                     <StyledCard title={`Order № ${order.id}`} key={order.id}>
                         <div>
                             <p>

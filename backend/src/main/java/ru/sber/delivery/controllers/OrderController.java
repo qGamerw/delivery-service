@@ -1,6 +1,8 @@
 package ru.sber.delivery.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.delivery.services.OrderService;
@@ -19,25 +21,16 @@ public class OrderController {
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
-
+    
     /**
-     * Возвращает заказы ожидающие доставки
+     * Возвращает заказы ожидающие доставки, ограниченные страницей
      *
      * @return список заказов
      */
     @GetMapping("/awaiting-delivery")
-    public ResponseEntity<List<?>> getActiveOrder() {
-        return ResponseEntity.ok(orderService.findAllActiveOrder());
-    }
-
-    /**
-     * Возвращает принятые заказы
-     *
-     * @return список заказов
-     */
-    @GetMapping("/delivering")
-    public ResponseEntity<List<?>> getActiveOrderForCourier() {
-        return ResponseEntity.ok(orderService.findAllActiveOrderForCourier());
+    public ResponseEntity<Page<?>> getActiveOrder(@RequestParam int page) {
+        int pageSize = 10;
+        return ResponseEntity.ok(orderService.findAllActiveOrdersByPage(page, pageSize));
     }
 
     /**
