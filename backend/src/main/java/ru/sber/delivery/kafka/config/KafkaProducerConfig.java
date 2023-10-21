@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import ru.sber.delivery.models.Order;
+import ru.sber.delivery.models.OrderStatus;
 
 @Configuration
 public class KafkaProducerConfig {
@@ -36,5 +38,25 @@ public class KafkaProducerConfig {
     public KafkaTemplate<String, Object> kafkaTemplate(
             ProducerFactory<String, Object> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
+    }
+
+    @Bean
+    public ProducerFactory<String, Order> updateStatusCourierProducerFactory() {
+        return new DefaultKafkaProducerFactory<>(producerConfig());
+    }
+    @Bean
+    public KafkaTemplate<String, Order> updateStatusCourierProducerFactory(
+            ProducerFactory<String, Order> updateStatusCourierProducerFactory) {
+        return new KafkaTemplate<>(updateStatusCourierProducerFactory);
+    }
+
+    @Bean
+    public ProducerFactory<String, OrderStatus> updateStatusProducerFactory() {
+        return new DefaultKafkaProducerFactory<>(producerConfig());
+    }
+    @Bean
+    public KafkaTemplate<String, OrderStatus> updateStatusProducerFactory(
+            ProducerFactory<String, OrderStatus> updateStatusProducerFactory) {
+        return new KafkaTemplate<>(updateStatusProducerFactory);
     }
 }

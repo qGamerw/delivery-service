@@ -4,7 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
+import ru.sber.delivery.models.Order;
+import ru.sber.delivery.models.OrderStatus;
 import ru.sber.delivery.services.OrderService;
 
 import java.util.List;
@@ -17,9 +20,14 @@ import java.util.List;
 @RequestMapping("orders")
 public class OrderController {
     private final OrderService orderService;
+    private KafkaTemplate<String, OrderStatus> kafkaOrderStatusTemplate;
+    private KafkaTemplate<String, Order> kafkaOrderCourierTemplate;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, KafkaTemplate<String, OrderStatus> kafkaOrderStatusTemplate,
+                           KafkaTemplate<String, Order> kafkaOrderCourierTemplate) {
         this.orderService = orderService;
+        this.kafkaOrderStatusTemplate = kafkaOrderStatusTemplate;
+        this.kafkaOrderCourierTemplate = kafkaOrderCourierTemplate;
     }
     
     /**
@@ -39,18 +47,19 @@ public class OrderController {
      * @param order содержит id курьера и id заказа
      */
     @PutMapping("/courier")
-    public ResponseEntity<?> updateOrderCourier(@RequestBody Object order) {
-        return orderService.updateOrderCourierId(order);
+    public ResponseEntity<?> updateOrderCourier(@RequestBody Order order) {
+        kafkaOrderCourierTemplate.send("courier_order", order);
+        return ResponseEntity.ok().build();
     }
 
     /**
      * Обновляет статус заказа
      *
-     * @param order содержит id заказа и новый статус
      */
     @PutMapping
-    public ResponseEntity<?> updateOrderStatus(@RequestBody Object order) {
-        return orderService.updateOrderStatus(order);
+    public ResponseEntity<?> updateOrderStatus(@RequestBody OrderStatus order) {
+        kafkaOrderStatusTemplate.send("update_courier_order", order);
+        return ResponseEntity.ok().build();
     }
 
     /**
