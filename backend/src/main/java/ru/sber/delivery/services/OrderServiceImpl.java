@@ -2,6 +2,7 @@ package ru.sber.delivery.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.sber.delivery.exceptions.UserNotFound;
@@ -22,22 +23,30 @@ public class OrderServiceImpl implements OrderService {
     public OrderServiceImpl(OrderFeign orderFeign) {
         this.orderFeign = orderFeign;
     }
-    @Override
+
     public ResponseEntity<?> updateOrderStatus(Object order) {
         return orderFeign.updateOrderStatus(order);
     }
 
-    @Override
+
     public ResponseEntity<?> updateOrderCourierId(Object order) {
         return orderFeign.updateOrderCourier(order);
     }
 
     @Override
     public Page<?> findAllActiveOrdersByPage(int page, int pageSize) {
-        return orderFeign.findAllActiveOrdersByPage(page, pageSize).getBody();
+        return null;
     }
 
-    @Override
+    @KafkaListener(
+            topics = "awaiting-delivery",
+            groupId="reflectoring-order",
+            containerFactory="orderKafkaListenerContainerFactory")
+    public Page<?> findAllActiveOrdersByPage(Page<?> order) {
+        return order;
+    }
+
+
     public Optional<?> findOrderById() {
         if (orderFeign.getOrderById(getUserIdSecurityContext()).hasBody()) {
             return Optional.of(Objects.requireNonNull(orderFeign.getOrderById(getUserIdSecurityContext()).getBody()));

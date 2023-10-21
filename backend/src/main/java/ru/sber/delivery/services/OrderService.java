@@ -23,7 +23,7 @@ public interface OrderService {
      * @return ответ
      */
     ResponseEntity<?> updateOrderCourierId(Object order);
-    
+
     /**
      * Ищет список заказов которые готовятся или уже готовы, но не доставляются, ограниченный страницей
      *
