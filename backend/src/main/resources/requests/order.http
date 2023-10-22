@@ -1,7 +1,7 @@
 ###
 
-PUT localhost:8080/orders
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4NDMwOTgsImV4cCI6MTY5NTkyOTQ5OH0.nhsPlsgDeoC2dhtoAjsa-t876rPo1WtDTyR6BmHB_J0
+PUT localhost:8081/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk3OTU4NTE2LCJleHAiOjE2OTgwNDQ5MTZ9.xHX3KoHiUP_QK4lvbG3m-EmvTfJdhr7H8wnITSOFHIk
 Content-Type: application/json
 
 {
@@ -11,13 +11,13 @@ Content-Type: application/json
 
 ###
 
-PUT localhost:8080/orders/courier
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4NDMwOTgsImV4cCI6MTY5NTkyOTQ5OH0.nhsPlsgDeoC2dhtoAjsa-t876rPo1WtDTyR6BmHB_J0
+PUT localhost:8081/orders/courier
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk3OTU3Nzg0LCJleHAiOjE2OTgwNDQxODR9.1RpexMmxVVn2aNtRUqbGXfSAnTNcYUSqUakHG8qhgrU
 Content-Type: application/json
 
 {
-  "id": "1",
-  "courierId": "1"
+  "id": "5",
+  "courierId": "2"
 }
 
 ###

@@ -13,10 +13,6 @@ public class KafkaTopicConfig {
         return TopicBuilder.name("awaiting-delivery").build();
     }
     @Bean
-    public NewTopic courierOrder() {
-        return TopicBuilder.name("courier_order").build();
-    }
-    @Bean
     public NewTopic updateCourierOrder() {
         return TopicBuilder.name("update_courier_order").build();
     }

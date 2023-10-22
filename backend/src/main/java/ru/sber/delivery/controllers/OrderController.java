@@ -20,14 +20,14 @@ import java.util.List;
 @RequestMapping("orders")
 public class OrderController {
     private final OrderService orderService;
-    private KafkaTemplate<String, OrderStatus> kafkaOrderStatusTemplate;
-    private KafkaTemplate<String, Order> kafkaOrderCourierTemplate;
+    private final KafkaTemplate<String, OrderStatus> kafkaOrderStatusTemplate;
+    private final KafkaTemplate<String, Order> kafkaUpdateStatusCourierTemplate;
 
     public OrderController(OrderService orderService, KafkaTemplate<String, OrderStatus> kafkaOrderStatusTemplate,
-                           KafkaTemplate<String, Order> kafkaOrderCourierTemplate) {
+                           KafkaTemplate<String, Order> kafkaUpdateStatusCourierTemplate) {
         this.orderService = orderService;
         this.kafkaOrderStatusTemplate = kafkaOrderStatusTemplate;
-        this.kafkaOrderCourierTemplate = kafkaOrderCourierTemplate;
+        this.kafkaUpdateStatusCourierTemplate = kafkaUpdateStatusCourierTemplate;
     }
     
     /**
@@ -48,7 +48,8 @@ public class OrderController {
      */
     @PutMapping("/courier")
     public ResponseEntity<?> updateOrderCourier(@RequestBody Order order) {
-        kafkaOrderCourierTemplate.send("courier_order", order);
+        log.info("Обновление курьера на заказ {}", order);
+        kafkaUpdateStatusCourierTemplate.send("update_courier_order", order);
         return ResponseEntity.ok().build();
     }
 
@@ -57,8 +58,9 @@ public class OrderController {
      *
      */
     @PutMapping
-    public ResponseEntity<?> updateOrderStatus(@RequestBody OrderStatus order) {
-        kafkaOrderStatusTemplate.send("update_courier_order", order);
+    public ResponseEntity<?> updateOrderStatus(@RequestBody OrderStatus orderStatus) {
+        log.info("{}", orderStatus);
+        kafkaOrderStatusTemplate.send("update_courier_order", orderStatus);
         return ResponseEntity.ok().build();
     }
 

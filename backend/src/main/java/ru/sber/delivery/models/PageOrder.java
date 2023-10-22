@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PageOrder {
-    int page;
-    int pageSize;
+    private int page;
+    private int pageSize;
 }

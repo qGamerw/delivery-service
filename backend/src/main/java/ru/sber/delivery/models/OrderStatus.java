@@ -1,7 +1,12 @@
 package ru.sber.delivery.models;
 
-public class OrderStatus {
-    Long id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-    String status;
+@Data
+@AllArgsConstructor
+public class OrderStatus {
+    private Long id;
+
+    private String status;
 }

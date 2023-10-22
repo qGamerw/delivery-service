@@ -3,7 +3,7 @@ package ru.sber.delivery.kafka.config;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.JsonSerializable;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +25,7 @@ public class KafkaProducerConfig {
         Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializable.class);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         return props;
     }
 
@@ -45,7 +45,7 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(producerConfig());
     }
     @Bean
-    public KafkaTemplate<String, Order> updateStatusCourierProducerFactory(
+    public KafkaTemplate<String, Order> kafkaUpdateStatusCourierTemplate(
             ProducerFactory<String, Order> updateStatusCourierProducerFactory) {
         return new KafkaTemplate<>(updateStatusCourierProducerFactory);
     }
@@ -55,7 +55,7 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(producerConfig());
     }
     @Bean
-    public KafkaTemplate<String, OrderStatus> updateStatusProducerFactory(
+    public KafkaTemplate<String, OrderStatus> kafkaUpdateStatusTemplate(
             ProducerFactory<String, OrderStatus> updateStatusProducerFactory) {
         return new KafkaTemplate<>(updateStatusProducerFactory);
     }
