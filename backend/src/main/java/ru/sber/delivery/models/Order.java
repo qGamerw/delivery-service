@@ -1,6 +1,7 @@
 package ru.sber.delivery.models;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,19 +18,19 @@ import java.util.List;
 @NoArgsConstructor
 public class Order {
     private Long id;
-    private Long courierId;
     private String clientName;
     private String description;
     private String clientPhone;
-    private String eStatusOrders;
+    private String status;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime orderTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime orderCookingTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime orderCookedTime;
     private String address;
     private String branchAddress;
-    private Integer flat;
-    private Integer frontDoor;
-    private Integer floor;
-    private Integer weight;
-    private LocalDateTime endCookingTime;
+    private Long branchId;
     private List<?> dishesOrders;
 
 }

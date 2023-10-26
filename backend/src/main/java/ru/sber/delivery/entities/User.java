@@ -58,7 +58,9 @@ public class User {
     @Column(length = 20)
     private EStatusCourier status;
 
+    @Column(precision = 9, scale = 6)
     private BigDecimal latitude;
+    @Column(precision = 9, scale = 6)
     private BigDecimal longitude;
 
     @Column(name = "notify")

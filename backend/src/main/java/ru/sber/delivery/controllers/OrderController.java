@@ -1,7 +1,7 @@
 package ru.sber.delivery.controllers;
 
 import lombok.extern.slf4j.Slf4j;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -20,14 +20,15 @@ import java.util.List;
 @RequestMapping("orders")
 public class OrderController {
     private final OrderService orderService;
-    private final KafkaTemplate<String, OrderStatus> kafkaOrderStatusTemplate;
     private final KafkaTemplate<String, Order> kafkaUpdateStatusCourierTemplate;
 
-    public OrderController(OrderService orderService, KafkaTemplate<String, OrderStatus> kafkaOrderStatusTemplate,
+
+    @Autowired
+    public OrderController(OrderService orderService,
                            KafkaTemplate<String, Order> kafkaUpdateStatusCourierTemplate) {
         this.orderService = orderService;
-        this.kafkaOrderStatusTemplate = kafkaOrderStatusTemplate;
         this.kafkaUpdateStatusCourierTemplate = kafkaUpdateStatusCourierTemplate;
+
     }
     
     /**
@@ -60,8 +61,7 @@ public class OrderController {
     @PutMapping
     public ResponseEntity<?> updateOrderStatus(@RequestBody OrderStatus orderStatus) {
         log.info("{}", orderStatus);
-        kafkaOrderStatusTemplate.send("update_courier_order", orderStatus);
-        return ResponseEntity.ok().build();
+        return orderService.updateOrderStatus(orderStatus);
     }
 
     /**

@@ -30,24 +30,7 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringSerializer.class);
         return props;
     }
-    public ConsumerFactory<String, Page<?>> orderConsumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "reflectoring-order");
 
-        return new DefaultKafkaConsumerFactory<>(
-                props,
-                new StringDeserializer(),
-                new JsonDeserializer<>(Object.class));
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Page<?>> orderKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Page<?>> factory =
-                new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(orderConsumerFactory());
-        return factory;
-    }
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfig());
@@ -58,7 +41,25 @@ public class KafkaConsumerConfig {
             ConcurrentMessageListenerContainer<String, String>> factory(
             ConsumerFactory<String, String> consumerFactory){
         ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
+        factory.setConsumerFactory(consumerFactory);
         return factory;
     }
+    public ConsumerFactory<String, Page<?>> orderConsumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "reflectoring-order");
+
+        return new DefaultKafkaConsumerFactory<>(
+                props,
+                new StringDeserializer(),
+                new JsonDeserializer<>(Object.class));
+    }
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Page<?>> orderKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Page<?>> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(orderConsumerFactory());
+        return factory;
+    }
+
 }
