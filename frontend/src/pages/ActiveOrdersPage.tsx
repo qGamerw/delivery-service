@@ -54,14 +54,6 @@ const ActiveOrdersPage: React.FC = () => {
         }
     };
 
-    const handleClickAcceptOrder = (idOrder:number) => {
-        console.log(user);
-        if (user) {
-
-            orderService.assignOrderToCourier({id:idOrder, courierId:user?.id}, dispatch);
-        }
-    };
-
     return (
         <Container>
             <CardsContainer>

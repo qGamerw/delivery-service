@@ -35,15 +35,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<?> findAllActiveOrdersByPage(int page, int pageSize) {
-        return null;
-    }
-
-    @KafkaListener(
-            topics = "awaiting-delivery",
-            groupId="reflectoring-order",
-            containerFactory="orderKafkaListenerContainerFactory")
-    public Page<?> findAllActiveOrdersByPage(Page<?> order) {
-        return order;
+        return orderFeign.findAllActiveOrdersByPage(page, pageSize).getBody();
     }
 
 

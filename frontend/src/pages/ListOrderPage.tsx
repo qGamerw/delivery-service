@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, Button, Collapse, Pagination } from 'antd';
+import { Card, Button, Collapse, Pagination, Spin } from 'antd';
 import styled from 'styled-components';
 import orderService from '../services/orderService';
 import { RootState } from '../store';
@@ -36,6 +36,7 @@ const StyledCard = styled(Card)`
 const { Panel } = Collapse;
 
 const ListOrderPage: React.FC = () => {
+    const [loading, setLoading] = useState(true);
     const [expandedPanel, setExpandedPanel] = useState('');
 
     const handleCollapseChange = (key: string | string[]) => {
@@ -68,6 +69,8 @@ const ListOrderPage: React.FC = () => {
             orderService.getAwaitingDeliveryOrders(currentPage - 1, dispatch).then((newOrders) => {
                 if (newOrders.length > 0) {
                     setCurrentPage((prevPage) => prevPage + 1);
+                } else if (newOrders.length === 0) {
+                    setLoading(false);
                 }
                 isLoading.current = false;
             });
@@ -91,6 +94,7 @@ const ListOrderPage: React.FC = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, [currentPage]);
+
 
 
     return (
@@ -155,6 +159,9 @@ const ListOrderPage: React.FC = () => {
                         </div>
                     </StyledCard>
                 ))}
+                {loading && (
+                    <Spin tip="Loading..." size="large" style={{ margin: '16px auto' }} />
+                )}
             </CardsContainer>
         </Container>
     );
