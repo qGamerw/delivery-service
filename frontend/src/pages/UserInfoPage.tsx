@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Button, Modal } from 'antd';
 import { RootState } from '../store';
 import profileImage from "../images/user-profile-image.jpg";
+import { Link } from 'react-router-dom';
 
 const ProfileContainer = styled.div`
   padding: 20px;
@@ -57,7 +58,7 @@ const UserPage: React.FC = () => {
       </ProfileInfo>
       <ButtonContainer>
         <Button type="primary">
-          Посмотреть прошлые заказы
+          <Link to="/all-orders">Посмотреть прошлые заказы</Link>
         </Button>
       </ButtonContainer>
     </ProfileContainer>

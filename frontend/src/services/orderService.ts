@@ -82,7 +82,7 @@ const getActiveDeliveryOrders = async (dispatch: Dispatch) => {
   const headers = authHeader();
 
   try {
-    const response = await axios.get(`${API_URL_ORDER}`, { headers });
+    const response = await axios.get(`${API_URL_ORDER}/delivering`, { headers });
     const activeDeliveryOrders = response.data;
     console.log(response.data)
 
@@ -111,17 +111,15 @@ const getOrderById = async (orderId: number, dispatch: Dispatch) => {
   }
 };
 
-const getOrdersForCourier = async (
-  courierId: number,
-  dispatch: Dispatch
-) => {
+const getOrdersForCourier = async (page: number, dispatch: Dispatch) => {
   const headers = authHeader();
 
   try {
-    const response = await axios.get(`${API_URL_ORDER}/courier/${courierId}`, { headers });
-    const courierOrders = response.data;
+    const response = await axios.get(`${API_URL_ORDER}?page=${page}`, { headers });
+    const courierOrders = response.data.content;
+    console.log(response.data.content)
 
-    dispatch(setAllOrders(courierOrders));
+    dispatch(concatenateAllOrders(courierOrders));
 
     return courierOrders;
   } catch (error) {

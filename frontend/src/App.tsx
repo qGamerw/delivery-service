@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage";
 import HeaderBar from "./components/HeaderBar";
 import ListOrderPage from "./pages/ListOrderPage";
 import ActiveOrdersPage from "./pages/ActiveOrdersPage";
+import AllOrdersPage from "./pages/AllOrdersPage";
 import UserInfoPage from "./pages/UserInfoPage";
 import { setAuth } from "./slices/authSlice";
 const App: React.FC = () => {
@@ -29,6 +30,7 @@ const App: React.FC = () => {
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/orders" element={<ListOrderPage/>}/>
                 <Route path="/active-orders" element={<ActiveOrdersPage/>}/>
+                <Route path="/all-orders" element={<AllOrdersPage/>}/>
                 <Route path="/info" element={<UserInfoPage/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>
             </Routes>
