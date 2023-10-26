@@ -43,6 +43,16 @@ public class OrderController {
     }
 
     /**
+     * Возвращает заказы которые доставляет курьер 
+     *
+     * @return заказы курьера
+     */
+    @GetMapping("/delivering")
+    ResponseEntity<List<?>> getDeliveringOrdersByCourierId() {
+        return ResponseEntity.ok(orderService.getOrdersIsDelivering());
+    }
+
+    /**
      * Устанавливает курьера на заказ
      *
      * @param order содержит id курьера и id заказа
@@ -74,15 +84,14 @@ public class OrderController {
         return ResponseEntity.ok(orderService.findOrderById());
     }
 
-    ;
-
     /**
      * Возвращает все заказы курьера
      *
      * @return заказы курьера
      */
     @GetMapping
-    ResponseEntity<List<?>> getAllOrdersByCourierId() {
-        return ResponseEntity.ok(orderService.findOrdersByCourierId());
+    ResponseEntity<Page<?>> getAllOrdersByCourierId(@RequestParam int page) {
+        int pageSize = 10;
+        return ResponseEntity.ok(orderService.findOrdersByCourierId(page, pageSize));
     }
 }

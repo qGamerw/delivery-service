@@ -42,7 +42,7 @@ public interface OrderService {
      *
      * @return список заказов курьера
      */
-    List<?> findOrdersByCourierId();
+    Page<?> findOrdersByCourierId(int page, int pageSize);
 
     List<?> getOrdersIsDelivering();
 }

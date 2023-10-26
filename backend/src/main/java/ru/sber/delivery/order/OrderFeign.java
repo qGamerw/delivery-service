@@ -23,7 +23,7 @@ public interface OrderFeign {
     @GetMapping("orders/{idOrder}")
     ResponseEntity<?> getOrderById(@PathVariable("idOrder") long id);
     @GetMapping("orders/courier/{idCourier}")
-    ResponseEntity<List<?>> getAllOrdersByCourierId(@PathVariable("idCourier") long id);
+    ResponseEntity<Page<?>> getAllOrdersByCourierId(@PathVariable("idCourier") long id, @RequestParam int page, @RequestParam int pageSize);
     @GetMapping("orders/delivering/courier/{idCourier}")
     ResponseEntity<List<?>> getOrdersIsDelivering(@PathVariable("idCourier") long id);
     @PutMapping("orders")

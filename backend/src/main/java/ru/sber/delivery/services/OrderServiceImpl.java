@@ -48,8 +48,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<?> findOrdersByCourierId() {
-        return orderFeign.getAllOrdersByCourierId(getUserIdSecurityContext()).getBody();
+    public Page<?> findOrdersByCourierId(int page, int pageSize) {
+        return orderFeign.getAllOrdersByCourierId(getUserIdSecurityContext(), page, pageSize).getBody();
     }
 
     @Override
