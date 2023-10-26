@@ -85,8 +85,8 @@ public class AdministrationServiceImpl implements AdministrationService {
         log.info("Поиск пользователей по смене со стороны администратора");
         return shiftRepository.findShiftsByBeginShift(dateShift)
                 .stream()
-                .filter(shift -> userRepository.existsById(shift.getUser().getId()))
                 .map(Shift::getUser)
+                .filter(user -> userRepository.existsById(user.getId()))
                 .toList();
     }
 

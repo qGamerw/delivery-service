@@ -25,7 +25,8 @@ import java.time.LocalDateTime;
 @Table(name = "users",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
+                @UniqueConstraint(columnNames = "email"),
+                @UniqueConstraint(columnNames = "phoneNumber")
         })
 public class User {
 
@@ -41,6 +42,9 @@ public class User {
     @Email
     private String email;
     @NotBlank
+    @Size(max = 12)
+    private String phoneNumber;
+    @NotBlank
     @Size(max = 120)
     @JsonIgnore
     private String password;
@@ -54,7 +58,9 @@ public class User {
     @Column(length = 20)
     private EStatusCourier status;
 
+    @Column(precision = 9, scale = 6)
     private BigDecimal latitude;
+    @Column(precision = 9, scale = 6)
     private BigDecimal longitude;
 
     @Column(name = "notify")
@@ -64,18 +70,20 @@ public class User {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String phoneNumber, String password) {
         this.username = username;
         this.email = email;
+        this.phoneNumber = phoneNumber;
         this.password = password;
     }
 
-    public User(long id, String username, String email,
+    public User(long id, String username, String email, String phoneNumber,
                     String password, LocalDateTime dateRegistration,
                     EStatusCourier status, BigDecimal latitude, BigDecimal longitude) {
         this.id = id;
         this.username = username;
         this.email = email;
+        this.phoneNumber = phoneNumber;
         this.password = password;
         this.dateRegistration = dateRegistration;
         this.status = status;

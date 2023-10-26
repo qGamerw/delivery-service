@@ -27,12 +27,18 @@ public class UserDetailsImpl implements UserDetails {
 
     private String email;
 
+    private String phoneNumber;
+
     @JsonIgnore
     private String password;
 
     private LocalDateTime dateRegistration;
 
     private EStatusCourier status;
+
+    private BigDecimal latitude;
+    private BigDecimal longitude;
+    private Boolean isNotify;
 
 
     private Collection<? extends GrantedAuthority> authorities;
@@ -43,9 +49,13 @@ public class UserDetailsImpl implements UserDetails {
         return new UserDetailsImpl(user.getId(),
                 user.getUsername(),
                 user.getEmail(),
+                user.getPhoneNumber(),
                 user.getPassword(),
                 user.getDateRegistration(),
                 user.getStatus(),
+                user.getLatitude(),
+                user.getLongitude(),
+                user.getIsNotify(),
                 authorities);
     }
 

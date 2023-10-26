@@ -1,7 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+interface Role {
+    id: number;
+    role: string;
+}
+
+interface User {
+    id: number;
+    username: string;
+    email: string;
+    dateRegistration: string;
+    status: string;
+    latitude: number;
+    longitude: number;
+    isNotify: boolean;
+    role: Role;
+}
+
 interface UserState {
-    user: any | null;
+    user: User | null;
     isAuth: boolean;
 }
 const getUserFromLocalStorage = (): any | null => {
@@ -24,9 +41,13 @@ const authSlice = createSlice({
         set: (state, action: PayloadAction<any>) => {
             state.user = action.payload;
         },
+        setAuth: (state, action: PayloadAction<any>) => {
+            state.isAuth = action.payload;
+        },
         loginUser: (state, action: PayloadAction<any>) => {
             state.isAuth = true;
             state.user = action.payload;
+            console.log(action.payload)
 
             if (action.payload.accessToken) {
                 localStorage.setItem('user', JSON.stringify(action.payload));
@@ -41,6 +62,6 @@ const authSlice = createSlice({
     },
 });
 
-export const { set, loginUser, logoutUser } = authSlice.actions;
+export const { set, setAuth, loginUser, logoutUser } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -63,7 +63,9 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        JwtResponse body = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles);
+        JwtResponse body = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(),
+                userDetails.getPhoneNumber(), userDetails.getDateRegistration(), userDetails.getStatus(),
+                userDetails.getLatitude(), userDetails.getLongitude(), userDetails.getIsNotify(), roles);
 
         return ResponseEntity
                 .ok(body);
@@ -79,7 +81,11 @@ public class AuthController {
             return ResponseEntity.badRequest().body(new MessageResponse("Email уже используется"));
         }
 
-        User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
+        if (userRepository.existsByPhoneNumber(signUpRequest.getPhoneNumber())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Номер телефона уже используется"));
+        }
+
+        User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(), signUpRequest.getPhoneNumber(),
                 encoder.encode(signUpRequest.getPassword()));
         
         Role userRole = roleRepository.findByRole(ERole.COURIER)

@@ -1,18 +1,19 @@
 ###
-POST http://localhost:8080/api/auth/signup
+POST http://localhost:8081/api/auth/signup
 Content-Type: application/json
 
 {
-  "username": "test3",
-  "email": "test3@yandex.ru",
+  "username": "test",
+  "email": "test@yandex.ru",
+  "phoneNumber": "+79002311813",
   "password": "password"
 }
 
 ###
-POST http://localhost:8080/api/auth/signin
+POST http://localhost:8081/api/auth/signin
 Content-Type: application/json
 
 {
-  "username": "admin",
+  "username": "test",
   "password": "password"
 }

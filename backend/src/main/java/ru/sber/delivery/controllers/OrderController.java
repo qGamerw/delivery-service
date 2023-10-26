@@ -1,8 +1,13 @@
 package ru.sber.delivery.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
+import ru.sber.delivery.models.Order;
+import ru.sber.delivery.models.OrderStatus;
 import ru.sber.delivery.services.OrderService;
 
 import java.util.List;
@@ -15,19 +20,36 @@ import java.util.List;
 @RequestMapping("orders")
 public class OrderController {
     private final OrderService orderService;
+    private final KafkaTemplate<String, Order> kafkaUpdateStatusCourierTemplate;
 
-    public OrderController(OrderService orderService) {
+
+    @Autowired
+    public OrderController(OrderService orderService,
+                           KafkaTemplate<String, Order> kafkaUpdateStatusCourierTemplate) {
         this.orderService = orderService;
-    }
+        this.kafkaUpdateStatusCourierTemplate = kafkaUpdateStatusCourierTemplate;
 
+    }
+    
     /**
-     * Возвращает заказы ожидающие доставки
+     * Возвращает заказы ожидающие доставки, ограниченные страницей
      *
      * @return список заказов
      */
     @GetMapping("/awaiting-delivery")
-    public ResponseEntity<List<?>> getActiveOrder() {
-        return ResponseEntity.ok(orderService.findAllActiveOrder());
+    public ResponseEntity<Page<?>> getActiveOrder(@RequestParam int page) {
+        int pageSize = 10;
+        return ResponseEntity.ok(orderService.findAllActiveOrdersByPage(page, pageSize));
+    }
+
+    /**
+     * Возвращает заказы которые доставляет курьер 
+     *
+     * @return заказы курьера
+     */
+    @GetMapping("/delivering")
+    ResponseEntity<List<?>> getDeliveringOrdersByCourierId() {
+        return ResponseEntity.ok(orderService.getOrdersIsDelivering());
     }
 
     /**
@@ -36,41 +58,40 @@ public class OrderController {
      * @param order содержит id курьера и id заказа
      */
     @PutMapping("/courier")
-    public ResponseEntity<?> updateOrderCourier(@RequestBody Object order) {
-        return orderService.updateOrderCourierId(order);
+    public ResponseEntity<?> updateOrderCourier(@RequestBody Order order) {
+        log.info("Обновление курьера на заказ {}", order);
+        kafkaUpdateStatusCourierTemplate.send("update_courier_order", order);
+        return ResponseEntity.ok().build();
     }
 
     /**
      * Обновляет статус заказа
      *
-     * @param order содержит id заказа и новый статус
      */
     @PutMapping
-    public ResponseEntity<?> updateOrderStatus(@RequestBody Object order) {
-        return orderService.updateOrderStatus(order);
+    public ResponseEntity<?> updateOrderStatus(@RequestBody OrderStatus orderStatus) {
+        log.info("{}", orderStatus);
+        return orderService.updateOrderStatus(orderStatus);
     }
 
     /**
      * Возвращает заказ по id
      *
-     * @param id заказа
      * @return заказ
      */
     @GetMapping("/{idOrder}")
-    ResponseEntity<?> getOrderById(@PathVariable("idOrder") long id) {
-        return ResponseEntity.ok(orderService.findOrderById(id));
+    ResponseEntity<?> getOrderById() {
+        return ResponseEntity.ok(orderService.findOrderById());
     }
-
-    ;
 
     /**
      * Возвращает все заказы курьера
      *
-     * @param id курьера
      * @return заказы курьера
      */
-    @GetMapping("/courier/{idCourier}")
-    ResponseEntity<List<?>> getAllOrdersByCourierId(@PathVariable("idCourier") long id) {
-        return ResponseEntity.ok(orderService.findOrdersByCourierId(id));
+    @GetMapping
+    ResponseEntity<Page<?>> getAllOrdersByCourierId(@RequestParam int page) {
+        int pageSize = 10;
+        return ResponseEntity.ok(orderService.findOrdersByCourierId(page, pageSize));
     }
 }

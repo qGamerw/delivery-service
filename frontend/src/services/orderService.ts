@@ -1,27 +1,33 @@
 import axios from "axios";
 import authHeader from "./authHeader";
 import { Dispatch } from "redux";
-import { setCurrentOrder, setAllOrders } from "../slices/orderSlice";
+import { setCurrentOrder, setAllOrders, concatenateAllOrders } from "../slices/orderSlice";
+
+interface Dishes {
+  orderId:number;
+  dishId:number;
+  dishName:string;
+}
 
 interface Order {
-  id: number | null;
+  id: number;
   courierId: number | null;
   clientName: string | null;
   description: string | null;
   clientPhone: number | null;
-  eStatusOrders: string | null;
-  orderTime: string | null;
+  status: string | null;
+  orderTime: string;
   address: string | null;
   branchAddress: string | null;
   flat: number | null;
   frontDoor: number | null;
   floor: number | null;
   weight: number | null;
-  endCookingTime: string | null;
-  dishesOrders: any[];
+  endCookingTime: string;
+  dishesOrders: Dishes[];
 }
 
-const API_URL_ORDER = "/api/orders";
+const API_URL_ORDER = "/orders";
 
 const updateOrder = async (orderData: Order, dispatch: Dispatch) => {
   const headers = authHeader();
@@ -39,11 +45,11 @@ const updateOrder = async (orderData: Order, dispatch: Dispatch) => {
   }
 };
 
-const assignOrderToCourier = async (orderData: Order, dispatch: Dispatch) => {
+const assignOrderToCourier = async (order: { courierId: any; id: number }, dispatch: Dispatch) => {
   const headers = authHeader();
 
   try {
-    const response = await axios.put(`${API_URL_ORDER}/courier`, orderData, { headers });
+    const response = await axios.put(`${API_URL_ORDER}/courier`, order, { headers });
     const assignedOrder = response.data;
 
     dispatch(setCurrentOrder(assignedOrder));
@@ -55,18 +61,36 @@ const assignOrderToCourier = async (orderData: Order, dispatch: Dispatch) => {
   }
 };
 
-const getAwaitingDeliveryOrders = async (dispatch: Dispatch) => {
+const getAwaitingDeliveryOrders = async (page: number, dispatch: Dispatch) => {
   const headers = authHeader();
 
   try {
-    const response = await axios.get(`${API_URL_ORDER}/awaiting-delivery`, { headers });
-    const awaitingDeliveryOrders = response.data;
+    const response = await axios.get(`${API_URL_ORDER}/awaiting-delivery?page=${page}`, { headers });
+    const awaitingDeliveryOrders = response.data.content;
+    console.log(response.data.content)
 
-    dispatch(setAllOrders(awaitingDeliveryOrders));
+    dispatch(concatenateAllOrders(awaitingDeliveryOrders));
 
     return awaitingDeliveryOrders;
   } catch (error) {
     console.error("Ошибка при получении ожидающих заказов:", error);
+    throw error;
+  }
+};
+
+const getActiveDeliveryOrders = async (dispatch: Dispatch) => {
+  const headers = authHeader();
+
+  try {
+    const response = await axios.get(`${API_URL_ORDER}/delivering`, { headers });
+    const activeDeliveryOrders = response.data;
+    console.log(response.data)
+
+    dispatch(setAllOrders(activeDeliveryOrders));
+
+    return activeDeliveryOrders;
+  } catch (error) {
+    console.error("Ошибка при получении доставляющихся заказов:", error);
     throw error;
   }
 };
@@ -87,17 +111,15 @@ const getOrderById = async (orderId: number, dispatch: Dispatch) => {
   }
 };
 
-const getOrdersForCourier = async (
-  courierId: number,
-  dispatch: Dispatch
-) => {
+const getOrdersForCourier = async (page: number, dispatch: Dispatch) => {
   const headers = authHeader();
 
   try {
-    const response = await axios.get(`${API_URL_ORDER}/courier/${courierId}`, { headers });
-    const courierOrders = response.data;
+    const response = await axios.get(`${API_URL_ORDER}?page=${page}`, { headers });
+    const courierOrders = response.data.content;
+    console.log(response.data.content)
 
-    dispatch(setAllOrders(courierOrders));
+    dispatch(concatenateAllOrders(courierOrders));
 
     return courierOrders;
   } catch (error) {
@@ -110,6 +132,7 @@ const orderService = {
   updateOrder,
   assignOrderToCourier,
   getAwaitingDeliveryOrders,
+  getActiveDeliveryOrders,
   getOrderById,
   getOrdersForCourier,
 };

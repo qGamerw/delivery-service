@@ -12,6 +12,7 @@ interface User {
   id: number;
   username: string;
   email: string;
+  phoneNumber: string;
   dateRegistration: string;
   status: string;
   latitude: number;
