@@ -14,13 +14,14 @@ const HeaderBar: React.FC = () => {
   };
 
   return (
-    <Header style={{ backgroundColor: 'white', textAlign: 'center' }}>
-      <Button
-        icon={<MenuOutlined />}
-        onClick={toggleSidebar}
-        style={{ float: 'left', marginTop: '15px', marginLeft: '-30px' }}
-      />
-      <Link to="/info">
+    <div>
+      <Header style={{ backgroundColor: 'white', textAlign: 'center', position: 'fixed', width: '100%', zIndex: 100 }}>
+        <Button
+          icon={<MenuOutlined />}
+          onClick={toggleSidebar}
+          style={{ float: 'left', marginTop: '15px', marginLeft: '-30px' }}
+        />
+        <Link to="/info">
           <div
             style={{
               width: '40px',
@@ -29,19 +30,20 @@ const HeaderBar: React.FC = () => {
               backgroundColor: '#EFEFEF',
               display: 'flex',
               justifyContent: 'center',
-              borderRadius: '50%', 
-              marginTop: '10px', 
+              borderRadius: '50%',
+              marginTop: '10px',
               marginRight: '-30px'
             }}
           >
-        <UserOutlined
-          style={{ float: 'right', fontSize: '32px' }}
-          />
+            <UserOutlined style={{ float: 'right', fontSize: '32px' }} />
           </div>
-      </Link>
-      <h1 style={{ color: 'black', marginTop: '0px' }}>Мои карты</h1>
+        </Link>
+        <h1 style={{ color: 'black', marginTop: '0px' }}>Мои карты</h1>
+      </Header>
+      <div style={{ paddingTop: '64px' }}>
+      </div>
       <Sidebar visible={isSidebarOpen} onClose={toggleSidebar} />
-    </Header>
+    </div>
   );
 };
 

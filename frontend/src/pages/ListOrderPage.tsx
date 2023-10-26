@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, Button, Collapse, Pagination, Spin } from 'antd';
+import { Card, Button, Collapse, Spin } from 'antd';
 import styled from 'styled-components';
 import orderService from '../services/orderService';
 import { RootState } from '../store';
+import { setAllOrders } from '../slices/orderSlice';
 
 const Container = styled.div`
   display: flex;
@@ -16,10 +17,6 @@ const CardsContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-`;
-
-const PaginationWrapper = styled.div`
-  margin-top: 16px;
 `;
 
 const StyledCard = styled(Card)`
@@ -78,6 +75,7 @@ const ListOrderPage: React.FC = () => {
     };
 
     useEffect(() => {
+        dispatch(setAllOrders([]));
         loadMoreOrders();
     }, []);
 
