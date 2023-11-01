@@ -29,4 +29,4 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8081/couriers/notify
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk4ODUwMjY2LCJleHAiOjE2OTg5MzY2NjZ9.YZGMGDnmlnexGUE-0N33ScA3CWTERQno0Ek1ppU16sQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk4ODU0NDc0LCJleHAiOjE2OTg5NDA4NzR9.CUssBwtgQj7GsFfOYtBwGXy2PugsFr5lcOtLn3D3_4c

@@ -21,7 +21,7 @@ interface User {
   role: Role;
 }
 
-const API_URL_COURIERS = "/api/couriers";
+const API_URL_COURIERS = "/couriers";
 
 const getCouriers = async (dispatch: Dispatch) => {
   const headers = authHeader();
@@ -82,11 +82,27 @@ const updateCoordinates = async (latitude: number, longitude: number, dispatch: 
   }
 };
 
+const getNotifyOrders = async () => {
+  const headers = authHeader();
+
+  try {
+    const response = await axios.get(`${API_URL_COURIERS}/notify`, { headers });
+    const orders = response.data;
+    console.log(orders);
+
+    return orders;
+  } catch (error) {
+    console.log("Уведомления не были получены");
+    return [];
+  }
+};
+
 const courierService = {
   getCouriers,
   updateUser,
   updateStatus,
   updateCoordinates,
+  getNotifyOrders,
 };
 
 export default courierService;

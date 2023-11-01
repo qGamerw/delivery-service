@@ -7,6 +7,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import MainPage from "./pages/MainPage";
 import LoginPage from "./pages/LoginPage";
 import HeaderBar from "./components/HeaderBar";
+import OrderNotificationComponent from "./components/OrderNotificationComponent";
 import ListOrderPage from "./pages/ListOrderPage";
 import ActiveOrdersPage from "./pages/ActiveOrdersPage";
 import AllOrdersPage from "./pages/AllOrdersPage";
@@ -25,6 +26,7 @@ const App: React.FC = () => {
     return (
         <div>
             <HeaderBar/>
+            <OrderNotificationComponent />
             <Routes>
                 <Route path="/" element={<MainPage/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
