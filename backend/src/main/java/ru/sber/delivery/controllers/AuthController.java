@@ -65,7 +65,7 @@ public class AuthController {
 
         JwtResponse body = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(),
                 userDetails.getPhoneNumber(), userDetails.getDateRegistration(), userDetails.getStatus(),
-                userDetails.getLatitude(), userDetails.getLongitude(), userDetails.getIsNotify(), roles);
+                userDetails.getLatitude(), userDetails.getLongitude(), roles);
 
         return ResponseEntity
                 .ok(body);

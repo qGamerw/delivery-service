@@ -63,9 +63,6 @@ public class User {
     @Column(precision = 9, scale = 6)
     private BigDecimal longitude;
 
-    @Column(name = "notify")
-    private Boolean isNotify;
-
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;

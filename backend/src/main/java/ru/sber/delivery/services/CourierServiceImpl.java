@@ -4,13 +4,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ru.sber.delivery.entities.Notify;
 import ru.sber.delivery.entities.User;
 import ru.sber.delivery.entities.enum_model.EStatusCourier;
 import ru.sber.delivery.exceptions.UserNotFound;
+import ru.sber.delivery.models.Order;
+import ru.sber.delivery.repositories.NotifyRepository;
 import ru.sber.delivery.repositories.UserRepository;
 import ru.sber.delivery.security.services.UserDetailsImpl;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,11 +25,15 @@ import java.util.Optional;
 public class CourierServiceImpl implements CourierService {
 
     private final UserRepository userRepository;
+    private final NotifyService notifyService;
+    private final OrderService orderService;
     private final AdministrationService administrationService;
 
     @Autowired
-    public CourierServiceImpl(UserRepository userRepository, AdministrationService administrationService) {
+    public CourierServiceImpl(UserRepository userRepository, NotifyService notifyService, OrderService orderService, AdministrationService administrationService) {
         this.userRepository = userRepository;
+        this.notifyService = notifyService;
+        this.orderService = orderService;
         this.administrationService = administrationService;
     }
 
@@ -66,6 +74,17 @@ public class CourierServiceImpl implements CourierService {
         }
         log.warn("Обновление провалено");
         return false;
+    }
+
+    @Override
+    public List<?> notifyCourier() {
+        List<Notify> notifies = notifyService.findNotifyByUserId();
+        log.info("Список уведомлений: {}", notifies);
+        return notifies.stream().map(notify -> {
+                    notifyService.delete(notify);
+                    return orderService.findOrderById(notify.getOrderId());
+                }
+        ).toList();
     }
 
     /**

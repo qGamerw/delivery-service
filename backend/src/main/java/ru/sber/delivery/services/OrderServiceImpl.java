@@ -39,12 +39,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    public Optional<?> findOrderById() {
-        if (orderFeign.getOrderById(getUserIdSecurityContext()).hasBody()) {
-            return Optional.of(Objects.requireNonNull(orderFeign.getOrderById(getUserIdSecurityContext()).getBody()));
-        }
-        return Optional.empty();
-
+    public Optional<?> findOrderById(long idOrder) {
+        return Optional.of(Objects.requireNonNull(orderFeign.getOrderById(idOrder).getBody()));
     }
 
     @Override
@@ -58,9 +54,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-            * Возвращает id user из security context
+     * Возвращает id user из security context
      *
-             * @return идентификатор пользователя
+     * @return идентификатор пользователя
      */
     private long getUserIdSecurityContext() {
 

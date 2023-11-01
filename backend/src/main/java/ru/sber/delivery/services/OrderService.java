@@ -36,7 +36,7 @@ public interface OrderService {
      *
      * @return заказ
      */
-    Optional<?> findOrderById();
+    Optional<?> findOrderById(long idOrder);
     /**
      * Возвращает все заказы которые брал курьер
      *

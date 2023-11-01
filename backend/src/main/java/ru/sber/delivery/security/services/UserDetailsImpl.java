@@ -38,7 +38,6 @@ public class UserDetailsImpl implements UserDetails {
 
     private BigDecimal latitude;
     private BigDecimal longitude;
-    private Boolean isNotify;
 
 
     private Collection<? extends GrantedAuthority> authorities;
@@ -55,7 +54,6 @@ public class UserDetailsImpl implements UserDetails {
                 user.getStatus(),
                 user.getLatitude(),
                 user.getLongitude(),
-                user.getIsNotify(),
                 authorities);
     }
 

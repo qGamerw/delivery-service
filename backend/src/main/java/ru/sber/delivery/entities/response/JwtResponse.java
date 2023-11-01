@@ -23,7 +23,7 @@ public class JwtResponse {
     private List<String> roles;
 
     public JwtResponse(String accessToken, Long id, String username, String email, String phoneNumber, LocalDateTime dateRegistration,
-                       EStatusCourier statusCourier, BigDecimal latitude, BigDecimal longitude, Boolean isNotify, List<String> roles) {
+                       EStatusCourier statusCourier, BigDecimal latitude, BigDecimal longitude, List<String> roles) {
         this.accessToken = accessToken;
         this.id = id;
         this.username = username;

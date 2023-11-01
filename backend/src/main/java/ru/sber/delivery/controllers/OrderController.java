@@ -58,9 +58,9 @@ public class OrderController {
      * @param order содержит id курьера и id заказа
      */
     @PutMapping("/courier")
-    public ResponseEntity<?> updateOrderCourier(@RequestBody Order order) {
+    public ResponseEntity<?> updateOrderCourier(@RequestBody Object order) {
         log.info("Обновление курьера на заказ {}", order);
-        kafkaUpdateStatusCourierTemplate.send("update_courier_order", order);
+        orderService.updateOrderCourierId(order);
         return ResponseEntity.ok().build();
     }
 
@@ -80,8 +80,8 @@ public class OrderController {
      * @return заказ
      */
     @GetMapping("/{idOrder}")
-    ResponseEntity<?> getOrderById() {
-        return ResponseEntity.ok(orderService.findOrderById());
+    ResponseEntity<?> getOrderById(@PathVariable long idOrder) {
+        return ResponseEntity.ok(orderService.findOrderById(idOrder));
     }
 
     /**
