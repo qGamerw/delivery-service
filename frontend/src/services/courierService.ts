@@ -55,7 +55,7 @@ const updateUser = async (userData: User, dispatch: Dispatch) => {
   }
 };
 
-const updateStatus = async (status: string, dispatch: Dispatch) => {
+const updateStatus = async (status: string) => {
   const headers = authHeader();
 
   try {
@@ -68,7 +68,7 @@ const updateStatus = async (status: string, dispatch: Dispatch) => {
   }
 };
 
-const updateCoordinates = async (latitude: number, longitude: number, dispatch: Dispatch) => {
+const updateCoordinates = async (latitude: number, longitude: number) => {
   const headers = authHeader();
   const coordinates = { latitude, longitude };
 
