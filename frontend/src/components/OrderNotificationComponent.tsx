@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, Card, Collapse, Spin } from "antd";
+import {Link} from 'react-router-dom';
 import styled from "styled-components";
 import courierService from "../services/courierService";
 import orderService from '../services/orderService';
@@ -162,17 +163,19 @@ const OrderNotificationComponent: React.FC = () => {
                     </Panel>
                 </Collapse>
             </div>
-            <div
-                style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}
-            >
-                <Button
-                    type="primary"
-                    style={{ width: '100%' }}
-                    onClick={() => handleClickAcceptOrder(order.id)}
+              <Link to="/active-orders">
+                <div
+                    style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}
                 >
-                    Accept Order
-                </Button>
-            </div>
+                    <Button
+                        type="primary"
+                        style={{ width: '100%' }}
+                        onClick={() => handleClickAcceptOrder(order.id)}
+                    >
+                        Accept Order
+                    </Button>
+                </div>
+                </Link>
             </StyledCard>
             ))}
           </CardsContainer>
