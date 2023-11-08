@@ -26,6 +26,6 @@ public interface OrderFeign {
     ResponseEntity<Page<?>> getAllOrdersByCourierId(@PathVariable("idCourier") long id, @RequestParam int page, @RequestParam int pageSize);
     @GetMapping("orders/delivering/courier/{idCourier}")
     ResponseEntity<List<?>> getOrdersIsDelivering(@PathVariable("idCourier") long id);
-    @PutMapping("orders")
-    ResponseEntity<?> updateOrderStatus(@RequestBody Object order);
+    @PutMapping("orders/{idOrder}")
+    ResponseEntity<?> updateOrderStatus(@PathVariable("idOrder") long id, @RequestBody Object order);
 }

@@ -68,10 +68,10 @@ public class OrderController {
      * Обновляет статус заказа
      *
      */
-    @PutMapping
-    public ResponseEntity<?> updateOrderStatus(@RequestBody OrderStatus orderStatus) {
-        log.info("{}", orderStatus);
-        return orderService.updateOrderStatus(orderStatus);
+    @PutMapping("/{idOrder}")
+    public ResponseEntity<?> updateOrderStatus(@PathVariable("idOrder") Long id, @RequestBody OrderStatus orderStatus) {
+        log.info("обновление статуса заказа с id{}", id);
+        return orderService.updateOrderStatus(id, orderStatus);
     }
 
     /**

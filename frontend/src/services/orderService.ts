@@ -29,11 +29,11 @@ interface Order {
 
 const API_URL_ORDER = "/orders";
 
-const updateOrder = async (orderData: Order, dispatch: Dispatch) => {
+const updateOrderStatus = async (orderData: Order, dispatch: Dispatch) => {
   const headers = authHeader();
 
   try {
-    const response = await axios.put(API_URL_ORDER, orderData, { headers });
+    const response = await axios.put(API_URL_ORDER+"/"+orderData.id, orderData, { headers });
     const updatedOrder = response.data;
 
     dispatch(setCurrentOrder(updatedOrder));
@@ -129,7 +129,7 @@ const getOrdersForCourier = async (page: number, dispatch: Dispatch) => {
 };
 
 const orderService = {
-  updateOrder,
+  updateOrderStatus,
   assignOrderToCourier,
   getAwaitingDeliveryOrders,
   getActiveDeliveryOrders,

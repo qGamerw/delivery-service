@@ -24,8 +24,8 @@ public class OrderServiceImpl implements OrderService {
         this.orderFeign = orderFeign;
     }
 
-    public ResponseEntity<?> updateOrderStatus(Object order) {
-        return orderFeign.updateOrderStatus(order);
+    public ResponseEntity<?> updateOrderStatus(Long id, Object order) {
+        return orderFeign.updateOrderStatus(id, order);
     }
 
 
