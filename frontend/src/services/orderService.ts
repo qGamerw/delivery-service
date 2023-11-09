@@ -29,7 +29,7 @@ interface Order {
 
 const API_URL_ORDER = "/orders";
 
-const updateOrderStatus = async (orderData: Order, dispatch: Dispatch) => {
+const updateOrder = async (orderData: { id: number; status: string }, dispatch: Dispatch) => {
   const headers = authHeader();
 
   try {
@@ -129,7 +129,7 @@ const getOrdersForCourier = async (page: number, dispatch: Dispatch) => {
 };
 
 const orderService = {
-  updateOrderStatus,
+  updateOrder,
   assignOrderToCourier,
   getAwaitingDeliveryOrders,
   getActiveDeliveryOrders,
