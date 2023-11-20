@@ -29,6 +29,6 @@ public interface RestaurantEmployeeService {
      * @param idUser - номер пользователя которого требуется уведомить
      * @return true в случае успеха
      */
-    boolean notifyCourier(long idUser, long idOrder);
+    boolean notifyCourier(String idUser, long idOrder);
 
 }

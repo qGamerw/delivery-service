@@ -3,11 +3,14 @@ package ru.sber.delivery.services;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import ru.sber.delivery.entities.Notify;
 import ru.sber.delivery.exceptions.UserNotFound;
 import ru.sber.delivery.repositories.NotifyRepository;
-import ru.sber.delivery.security.services.UserDetailsImpl;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
+// import ru.sber.delivery.security.services.UserDetailsImpl;
 
 import java.util.List;
 
@@ -16,10 +19,12 @@ import java.util.List;
 public class NotifyServiceImpl implements NotifyService {
 
     private final NotifyRepository notifyRepository;
+    private final JwtService jwtService;
 
     @Autowired
-    public NotifyServiceImpl(NotifyRepository notifyRepository) {
+    public NotifyServiceImpl(NotifyRepository notifyRepository, JwtService jwtService) {
         this.notifyRepository = notifyRepository;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -59,12 +64,15 @@ public class NotifyServiceImpl implements NotifyService {
      *
      * @return идентификатор пользователя
      */
-    private long getUserIdSecurityContext() {
+    private String getUserIdSecurityContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (authentication instanceof JwtAuthenticationToken) {
+            JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
+            Jwt jwt = jwtAuthenticationToken.getToken();
+            String subClaim = jwtService.getSubClaim(jwt);
 
-        if (principal instanceof UserDetailsImpl) {
-            return ((UserDetailsImpl) principal).getId();
+            return subClaim;
         } else {
             throw new UserNotFound("Пользователь не найден");
         }

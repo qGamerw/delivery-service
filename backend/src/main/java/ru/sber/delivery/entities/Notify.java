@@ -22,7 +22,7 @@ public class Notify {
     @Column(name = "order_id", nullable = false)
     private long orderId;
 
-    public Notify(long userId, long orderId) {
+    public Notify(String userId, long orderId) {
         User userModel = new User();
         userModel.setId(userId);
         this.user = userModel;

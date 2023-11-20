@@ -12,6 +12,8 @@ import java.util.Optional;
  */
 public interface CourierService {
 
+
+    boolean addUserById(String userId);
     /**
      * Возвращает информацию о курьере
      *

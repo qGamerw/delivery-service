@@ -77,7 +77,7 @@ public class RestaurantEmployeeServiceImpl implements RestaurantEmployeeService 
     }
 
     @Override
-    public boolean notifyCourier(long idUser, long idOrder) {
+    public boolean notifyCourier(String idUser, long idOrder) {
         log.info("Уведомление курьера о заказе");
         notifyService.save(new Notify(idUser, idOrder));
         return true;

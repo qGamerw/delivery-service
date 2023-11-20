@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface NotifyRepository extends JpaRepository<Notify, Long> {
-    List<Notify> findAllByUser_Id(Long id);
+    List<Notify> findAllByUser_Id(String id);
 }

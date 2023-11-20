@@ -35,10 +35,10 @@ public class AdministrationServiceImpl implements AdministrationService {
         log.info("Обновление данных пользователя: {}", user.getId());
         if (userRepository.existsById(user.getId())) {
             User oldUser = userRepository.findById(user.getId()).get();
-            if (user.getPassword() == null) {
-                user.setPassword(oldUser.getPassword());
-            }
-            user.setDateRegistration(oldUser.getDateRegistration());
+            // if (user.getPassword() == null) {
+            //     user.setPassword(oldUser.getPassword());
+            // }
+            // user.setDateRegistration(oldUser.getDateRegistration());
             if (user.getRole() == null) {
                 user.setRole(oldUser.getRole());
             }
@@ -64,7 +64,7 @@ public class AdministrationServiceImpl implements AdministrationService {
     }
 
     @Override
-    public Optional<User> findUser(long idUser) {
+    public Optional<User> findUser(String idUser) {
         log.info("Поиск пользователя со стороны администратора: {}", idUser);
         return userRepository.findById(idUser);
     }
