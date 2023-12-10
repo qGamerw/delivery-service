@@ -39,37 +39,6 @@ public class AdministratorController {
         this.jwtService = jwtService;
     }
 
-    @GetMapping
-    public String hello1() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication instanceof JwtAuthenticationToken) {
-            JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
-
-            Jwt jwt = jwtAuthenticationToken.getToken();
-
-            String subClaim = jwtService.getSubClaim(jwt);
-
-            System.out.println(subClaim);
-            System.out.println(jwtService.getEmailClaim(jwt));
-            System.out.println(jwtService.getPhoneNumberClaim(jwt));
-            System.out.println(jwtService.getPreferredUsernameClaim(jwt));
-        }
-        return "Hello from Spring boot & Keycloak";
-    }
-
-    @GetMapping("/hello")
-    @PreAuthorize("hasRole('client_user')")
-    public String hello() {
-        return "Hello from Spring boot & Keycloak";
-    }
-
-    @GetMapping("/hello-2")
-    @PreAuthorize("hasRole('client_admin')")
-    public String hello2() {
-        return "Hello from Spring boot & Keycloak - ADMIN";
-    }
-
     /**
      * Возвращает информацию о курьере
      *

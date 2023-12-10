@@ -9,6 +9,7 @@ import ru.sber.delivery.exceptions.UserNotFound;
 import ru.sber.delivery.models.Attributes;
 import ru.sber.delivery.models.Credential;
 import ru.sber.delivery.models.LoginRequest;
+import ru.sber.delivery.models.RefreshToken;
 import ru.sber.delivery.models.SignupRequest;
 import ru.sber.delivery.models.UserRequest;
 import ru.sber.delivery.models.TokenResponse;
@@ -139,7 +140,32 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<String> refreshUser(@RequestBody RefreshToken refreshToken) {
+        HttpHeaders tokenHeaders = new HttpHeaders();
+        tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        
+        MultiValueMap<String, String> tokenBody = new LinkedMultiValueMap<>();
+        tokenBody.add("grant_type", "refresh_token");
+        tokenBody.add("client_id", clientId);
+        tokenBody.add("refresh_token", refreshToken.getRefresh_token());
+
+        HttpEntity<MultiValueMap<String, String>> tokenEntity = new HttpEntity<>(tokenBody, tokenHeaders);
+
+        try {
+                ResponseEntity<String> tokenResponseEntity = new RestTemplate().exchange(
+                        keycloakTokenUrl, HttpMethod.POST, tokenEntity, String.class);
+
+                return new ResponseEntity<>(tokenResponseEntity.getBody(), 
+                        tokenResponseEntity.getStatusCode());
+        } catch (Exception e) {
+                e.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping
+    @PreAuthorize("hasRole('client_user')")
     public ResponseEntity<String> getUserDetails() {
         HttpHeaders userHeaders = new HttpHeaders();
         userHeaders.setContentType(MediaType.APPLICATION_JSON);
