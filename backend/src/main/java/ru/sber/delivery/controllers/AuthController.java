@@ -1,10 +1,6 @@
 package ru.sber.delivery.controllers;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
-import ru.sber.delivery.entities.enum_model.ERole;
-import ru.sber.delivery.entities.Role;
-import ru.sber.delivery.entities.User;
 import ru.sber.delivery.exceptions.UserNotFound;
 import ru.sber.delivery.models.Attributes;
 import ru.sber.delivery.models.Credential;
@@ -12,36 +8,24 @@ import ru.sber.delivery.models.LoginRequest;
 import ru.sber.delivery.models.RefreshToken;
 import ru.sber.delivery.models.SignupRequest;
 import ru.sber.delivery.models.UserRequest;
-import ru.sber.delivery.models.TokenResponse;
 import ru.sber.delivery.models.UserDetails;
-import ru.sber.delivery.repositories.RoleRepository;
-import ru.sber.delivery.repositories.UserRepository;
 import ru.sber.delivery.services.CourierService;
 import ru.sber.delivery.services.JwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -56,7 +40,7 @@ public class AuthController {
     private final String keycloakTokenUrl = "http://localhost:8080/realms/delivery-realm/protocol/openid-connect/token";
     private final String keycloakCreateUserUrl = "http://localhost:8080/admin/realms/delivery-realm/users";
     private final String clientId = "login-app";
-    private final String gratType = "password";
+    private final String grantType = "password";
     
     private final CourierService courierService;
     private final JwtService jwtService;
@@ -84,7 +68,7 @@ public class AuthController {
         userRequest.setAttributes(attributes);
 
         Credential credential = new Credential();
-        credential.setType(gratType);
+        credential.setType(grantType);
         credential.setValue(signupRequest.getPassword());
 
         List<Credential> credentials = new ArrayList<>();
@@ -121,7 +105,7 @@ public class AuthController {
         tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         
         MultiValueMap<String, String> tokenBody = new LinkedMultiValueMap<>();
-        tokenBody.add("grant_type", gratType);
+        tokenBody.add("grant_type", grantType);
         tokenBody.add("client_id", clientId);
         tokenBody.add("username", loginRequest.getUsername());
         tokenBody.add("password", loginRequest.getPassword());

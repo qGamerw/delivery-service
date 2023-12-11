@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.delivery.models.Order;
 import ru.sber.delivery.models.OrderStatus;
@@ -20,14 +21,11 @@ import java.util.List;
 @RequestMapping("orders")
 public class OrderController {
     private final OrderService orderService;
-    private final KafkaTemplate<String, Order> kafkaUpdateStatusCourierTemplate;
 
 
     @Autowired
-    public OrderController(OrderService orderService,
-                           KafkaTemplate<String, Order> kafkaUpdateStatusCourierTemplate) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
-        this.kafkaUpdateStatusCourierTemplate = kafkaUpdateStatusCourierTemplate;
 
     }
     
@@ -37,6 +35,7 @@ public class OrderController {
      * @return список заказов
      */
     @GetMapping("/awaiting-delivery")
+    @PreAuthorize("hasRole('client_user')")
     public ResponseEntity<Page<?>> getActiveOrder(@RequestParam int page) {
         int pageSize = 10;
         return ResponseEntity.ok(orderService.findAllActiveOrdersByPage(page, pageSize));
@@ -48,6 +47,7 @@ public class OrderController {
      * @return заказы курьера
      */
     @GetMapping("/delivering")
+    @PreAuthorize("hasRole('client_user')")
     ResponseEntity<List<?>> getDeliveringOrdersByCourierId() {
         return ResponseEntity.ok(orderService.getOrdersIsDelivering());
     }
@@ -58,6 +58,7 @@ public class OrderController {
      * @param order содержит id курьера и id заказа
      */
     @PutMapping("/courier")
+    @PreAuthorize("hasRole('client_user')")
     public ResponseEntity<?> updateOrderCourier(@RequestBody Object order) {
         log.info("Обновление курьера на заказ {}", order);
         orderService.updateOrderCourierId(order);
@@ -69,6 +70,7 @@ public class OrderController {
      *
      */
     @PutMapping("/{idOrder}")
+    @PreAuthorize("hasRole('client_user')")
     public ResponseEntity<?> updateOrderStatus(@PathVariable("idOrder") Long id, @RequestBody OrderStatus orderStatus) {
         log.info("обновление статуса заказа с id{}", id);
         return orderService.updateOrderStatus(id, orderStatus);
@@ -80,6 +82,7 @@ public class OrderController {
      * @return заказ
      */
     @GetMapping("/{idOrder}")
+    @PreAuthorize("hasRole('client_user')")
     ResponseEntity<?> getOrderById(@PathVariable long idOrder) {
         return ResponseEntity.ok(orderService.findOrderById(idOrder));
     }
@@ -90,6 +93,7 @@ public class OrderController {
      * @return заказы курьера
      */
     @GetMapping
+    @PreAuthorize("hasRole('client_user')")
     ResponseEntity<Page<?>> getAllOrdersByCourierId(@RequestParam int page) {
         int pageSize = 10;
         return ResponseEntity.ok(orderService.findOrdersByCourierId(page, pageSize));

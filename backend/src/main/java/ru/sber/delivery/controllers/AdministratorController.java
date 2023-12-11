@@ -39,6 +39,22 @@ public class AdministratorController {
         this.jwtService = jwtService;
     }
 
+    // @GetMapping("/test")
+    // @PreAuthorize("hasRole('client_user')")
+    // public ResponseEntity<?> test() {
+    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+    //     JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
+    //     Jwt jwt = Jwt.withTokenValue(jwtAuthenticationToken.getToken().getTokenValue()).header(null, jwtAuthenticationToken).claim(null, jwtAuthenticationToken).build();
+    //     String subClaim = jwtService.getSubClaim(jwt);
+    //     System.out.println(subClaim);
+    //     System.out.println(jwt.getTokenValue());
+    //     System.out.println(jwtService.getExpirationTime(jwt));
+    //     return ResponseEntity.ok().body(subClaim);
+
+        
+    // }
+
     /**
      * Возвращает информацию о курьере
      *
