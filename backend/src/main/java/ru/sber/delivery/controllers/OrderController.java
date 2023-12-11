@@ -26,7 +26,6 @@ public class OrderController {
     @Autowired
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
-
     }
     
     /**
@@ -97,5 +96,11 @@ public class OrderController {
     ResponseEntity<Page<?>> getAllOrdersByCourierId(@RequestParam int page) {
         int pageSize = 10;
         return ResponseEntity.ok(orderService.findOrdersByCourierId(page, pageSize));
+    }
+
+    @GetMapping("/analytic/count")
+    ResponseEntity<Integer> getAllOrdersByCourierId() {
+        log.info("Возвращает количество заказов совершил курьер");
+        return ResponseEntity.ok(orderService.getCountOrderCourier());
     }
 }

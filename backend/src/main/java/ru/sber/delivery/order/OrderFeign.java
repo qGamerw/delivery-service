@@ -29,4 +29,6 @@ public interface OrderFeign {
     ResponseEntity<List<?>> getOrdersIsDelivering(@RequestHeader("Authorization") String bearerToken, @PathVariable("idCourier") String id);
     @PutMapping("orders/{idOrder}")
     ResponseEntity<?> updateOrderStatus(@RequestHeader("Authorization") String bearerToken, @PathVariable("idOrder") long id, @RequestBody Object order);
+    @GetMapping("analytic/courier/{id}")
+    ResponseEntity<Integer> getCountOrderFromCourier(@PathVariable("id") long idCourier);
 }

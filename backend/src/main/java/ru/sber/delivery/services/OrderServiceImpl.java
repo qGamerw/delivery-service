@@ -87,6 +87,11 @@ public class OrderServiceImpl implements OrderService {
         return orderFeign.getOrdersIsDelivering("Bearer "+orderToken.get(0).getAccessToken(), getUserIdSecurityContext()).getBody();
     }
 
+    @Override
+    public Integer getCountOrderCourier() {
+        return orderFeign.getCountOrderFromCourier(getUserIdSecurityContext()).getBody();
+    }
+
     /**
      * Возвращает id user из security context
      *

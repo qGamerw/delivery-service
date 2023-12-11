@@ -45,4 +45,5 @@ public interface OrderService {
     Page<?> findOrdersByCourierId(int page, int pageSize);
 
     List<?> getOrdersIsDelivering();
+    Integer getCountOrderCourier();
 }
