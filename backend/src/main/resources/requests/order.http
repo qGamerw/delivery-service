@@ -37,3 +37,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2O
 ###
 GET http://localhost:8081/orders?page=0
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk4MzAzNzE4LCJleHAiOjE2OTgzOTAxMTh9.shJtIgl4BeEL53La1Oa7iTnrgnfLuCrRXugZGzRDXHg
+
+###
+GET http://localhost:8081/orders/analytic/count
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzAxNTk2ODM1LCJleHAiOjE3MDE2ODMyMzV9.Hz2JyfGtsGM4l8ifT3JQsFDTG7U_gs3x32IPU2RGsBc

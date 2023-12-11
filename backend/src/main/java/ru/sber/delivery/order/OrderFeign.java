@@ -28,4 +28,6 @@ public interface OrderFeign {
     ResponseEntity<List<?>> getOrdersIsDelivering(@PathVariable("idCourier") String id);
     @PutMapping("orders/{idOrder}")
     ResponseEntity<?> updateOrderStatus(@PathVariable("idOrder") long id, @RequestBody Object order);
+    @GetMapping("analytic/courier/{id}")
+    ResponseEntity<Integer> getCountOrderFromCourier(@PathVariable("id") long idCourier);
 }
