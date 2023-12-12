@@ -59,7 +59,7 @@ public class OrderController {
     @PutMapping("/courier")
     @PreAuthorize("hasRole('client_user')")
     public ResponseEntity<?> updateOrderCourier(@RequestBody Object order) {
-        log.info("Обновление курьера на заказ {}", order);
+        log.info("Установление курьера на заказ {}", order);
         orderService.updateOrderCourierId(order);
         return ResponseEntity.ok().build();
     }

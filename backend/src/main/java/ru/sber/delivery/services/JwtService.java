@@ -10,4 +10,5 @@ public interface JwtService {
     String getEmailClaim(Jwt jwt);
     String getPhoneNumberClaim(Jwt jwt);
     String getPreferredUsernameClaim(Jwt jwt);
+    Long getCreatedTimestampClaim(Jwt jwt);
 }

@@ -155,14 +155,15 @@ public class AuthController {
         userHeaders.setContentType(MediaType.APPLICATION_JSON);
 
         Jwt jwt = getUserJwtTokenSecurityContext();
-        UserDetails userDetails = new UserDetails(jwtService.getPreferredUsernameClaim(jwt), 
-                jwtService.getEmailClaim(jwt), jwtService.getPhoneNumberClaim(jwt));
+        UserDetails userDetails = new UserDetails(jwtService.getSubClaim(jwt), jwtService.getPreferredUsernameClaim(jwt), 
+                jwtService.getEmailClaim(jwt), jwtService.getPhoneNumberClaim(jwt), jwtService.getCreatedTimestampClaim(jwt));
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userDetailsJson;
         try {
                 userDetailsJson = objectMapper.writeValueAsString(userDetails);
         } catch (JsonProcessingException e) {
+                e.printStackTrace();
                 return new ResponseEntity<>("Error processing user details", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

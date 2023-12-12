@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class UserDetails {
+    private String id;
     private String username;
     private String email;
     private String phoneNumber;
-    
+    private Long registrationDate;
 }

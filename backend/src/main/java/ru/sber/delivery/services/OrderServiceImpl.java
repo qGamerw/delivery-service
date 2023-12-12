@@ -57,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
     public ResponseEntity<?> updateOrderCourierId(Object order) {
         checkAndUpdateOrderTokens();
         List<OrderToken> orderToken = orderTokenService.findAll();
-        return orderFeign.updateOrderCourier("Bearer "+orderToken.get(0).getAccessToken(), order);
+        return orderFeign.updateOrderCourier("Bearer "+orderToken.get(0).getAccessToken(), getUserIdSecurityContext(), order);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
     public Optional<?> findOrderById(long idOrder) {
         checkAndUpdateOrderTokens();
         List<OrderToken> orderToken = orderTokenService.findAll();
-        return Optional.of(Objects.requireNonNull("Bearer "+orderFeign.getOrderById(orderToken.get(0).getAccessToken(), idOrder).getBody()));
+        return Optional.of(Objects.requireNonNull(orderFeign.getOrderById("Bearer "+orderToken.get(0).getAccessToken(), idOrder).getBody()));
     }
 
     @Override
@@ -89,7 +89,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer getCountOrderCourier() {
-        return orderFeign.getCountOrderFromCourier(getUserIdSecurityContext()).getBody();
+        checkAndUpdateOrderTokens();
+        List<OrderToken> orderToken = orderTokenService.findAll();
+        return orderFeign.getCountOrderFromCourier("Bearer "+orderToken.get(0).getAccessToken(), getUserIdSecurityContext()).getBody();
     }
 
     /**

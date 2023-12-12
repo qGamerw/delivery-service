@@ -17,8 +17,8 @@ import java.util.List;
  */
 @FeignClient(name = "orderService", url="localhost:8083/")
 public interface OrderFeign {
-    @PutMapping("orders/courier")
-    ResponseEntity<?> updateOrderCourier(@RequestHeader("Authorization") String bearerToken, @RequestBody Object order);
+    @PutMapping("orders/courier/{courierId}")
+    ResponseEntity<?> updateOrderCourier(@RequestHeader("Authorization") String bearerToken, @PathVariable("courierId") String courierId, @RequestBody Object order);
     @GetMapping("orders/awaiting-delivery/by-page")
     ResponseEntity<Page<?>> findAllActiveOrdersByPage(@RequestHeader("Authorization") String bearerToken, @RequestParam int page, @RequestParam int pageSize);
     @GetMapping("orders/{idOrder}")
@@ -30,5 +30,5 @@ public interface OrderFeign {
     @PutMapping("orders/{idOrder}")
     ResponseEntity<?> updateOrderStatus(@RequestHeader("Authorization") String bearerToken, @PathVariable("idOrder") long id, @RequestBody Object order);
     @GetMapping("analytic/courier/{id}")
-    ResponseEntity<Integer> getCountOrderFromCourier(@PathVariable("id") String idCourier);
+    ResponseEntity<Integer> getCountOrderFromCourier(@RequestHeader("Authorization") String bearerToken, @PathVariable("id") String idCourier);
 }

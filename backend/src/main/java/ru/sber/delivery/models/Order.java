@@ -18,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Order {
     private Long id;
+    private Long clientId;
     private String clientName;
     private String description;
     private String clientPhone;

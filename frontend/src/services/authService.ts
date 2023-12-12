@@ -1,6 +1,7 @@
 import axios from "axios";
-import { loginUser, logoutUser } from "../slices/authSlice";
+import { setUserData, loginUser, logoutUser } from "../slices/authSlice";
 import { Dispatch } from "redux";
+import authHeader from "./authHeader";
 
 interface Registration {
     username: string;
@@ -53,7 +54,15 @@ const login = async (login: Login, dispatch: Dispatch): Promise<User> => {
         });
     console.log(response);
     dispatch(loginUser(response.data));
-    return response.data;
+
+    const headers = authHeader();
+
+    let detailsResponse = await axios
+        .get<User>("/api/auth", { headers });
+    console.log(detailsResponse);
+    dispatch(setUserData(detailsResponse.data));
+
+    return detailsResponse.data;
 };
 
 const logout = (dispatch: Dispatch): void => {
