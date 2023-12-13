@@ -150,7 +150,7 @@ public class AuthController {
 
     @GetMapping
     @PreAuthorize("hasRole('client_user')")
-    public ResponseEntity<String> getUserDetails() {
+    public ResponseEntity<UserDetails> getUserDetails() {
         HttpHeaders userHeaders = new HttpHeaders();
         userHeaders.setContentType(MediaType.APPLICATION_JSON);
 
@@ -158,16 +158,7 @@ public class AuthController {
         UserDetails userDetails = new UserDetails(jwtService.getSubClaim(jwt), jwtService.getPreferredUsernameClaim(jwt), 
                 jwtService.getEmailClaim(jwt), jwtService.getPhoneNumberClaim(jwt), jwtService.getCreatedTimestampClaim(jwt));
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String userDetailsJson;
-        try {
-                userDetailsJson = objectMapper.writeValueAsString(userDetails);
-        } catch (JsonProcessingException e) {
-                e.printStackTrace();
-                return new ResponseEntity<>("Error processing user details", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return new ResponseEntity<>(userDetailsJson, userHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(userDetails, userHeaders, HttpStatus.OK);
     }
 
     
