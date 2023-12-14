@@ -65,6 +65,24 @@ const login = async (login: Login, dispatch: Dispatch): Promise<User> => {
     return detailsResponse.data;
 };
 
+const refresh = async (refresh_token: String, dispatch: Dispatch): Promise<User> => {
+    let response = await axios
+        .post<User>(API_URL + "refresh", {
+            refresh_token
+        });
+    console.log(response);
+    dispatch(loginUser(response.data));
+
+    const headers = authHeader();
+
+    let detailsResponse = await axios
+        .get<User>("/api/auth", { headers });
+    console.log(detailsResponse);
+    dispatch(setUserData(detailsResponse.data));
+
+    return detailsResponse.data;
+};
+
 const logout = (dispatch: Dispatch): void => {
     console.log("logout");
     dispatch(logoutUser());
@@ -74,6 +92,7 @@ const authService = {
     register,
     login,
     logout,
+    refresh,
 };
 
 export default authService;
