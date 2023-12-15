@@ -19,26 +19,32 @@ const MainPage: React.FC = () => {
     const [currentCoordinates, setCurrentCoordinates] = useState<Coordinates | null>(null);
     const [mapCenter, setMapCenter] = useState<[number, number]>([55.75, 37.57]);
 
-    useEffect(() => {
-        const updateCoordinates = async () => {
-            try {
-                const position = await getLocation();
-                const { latitude, longitude } = position.coords;
+    const updateCoordinates = async () => {
+        try {
+            const position = await getLocation();
+            const { latitude, longitude } = position.coords;
 
-                if (!currentCoordinates || (currentCoordinates.latitude !== latitude && currentCoordinates.longitude !== longitude)) {
-                    setCurrentCoordinates(position.coords);
-                    await courierService.updateCoordinates(latitude, longitude);
+            if (!currentCoordinates || (currentCoordinates.latitude !== latitude && currentCoordinates.longitude !== longitude)) {
+                console.log([currentCoordinates?.latitude, currentCoordinates?.longitude]);
+                setCurrentCoordinates(oldVal => {return position.coords});
+                console.log([currentCoordinates?.latitude, currentCoordinates?.longitude]);
+                await courierService.updateCoordinates(latitude, longitude);
 
-                    console.log([latitude, longitude]);
-                    console.log([mapCenter[0], mapCenter[1]]);
-                    setMapCenter([latitude, longitude]);
-                    console.log([mapCenter[0], mapCenter[1]]);
-                }
-
-            } catch (error) {
-                console.error('Failed to get current position:', error);
+                console.log([latitude, longitude]);
+                console.log([mapCenter[0], mapCenter[1]]);
+                // setMapCenter(oldVal => {return [latitude, longitude]});
+                const brand_new_var = [latitude, longitude];
+                setMapCenter([brand_new_var[0], brand_new_var[1]]);
+                // setMapCenter([latitude, longitude]);
+                console.log([mapCenter[0], mapCenter[1]]);
             }
-        };
+
+        } catch (error) {
+            console.error('Failed to get current position:', error);
+        }
+    };
+
+    useEffect(() => {
 
         const intervalId = setInterval(updateCoordinates, 10000);
 
