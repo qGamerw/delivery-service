@@ -30,15 +30,13 @@ import org.springframework.http.*;
 @RequestMapping("administrators")
 public class AdministratorController {
     private final AdministrationService administratorService;
-    private final JwtService jwtService;
 
     /**
      * Конструктор контроллера администраторов
      */
     @Autowired
-    public AdministratorController(AdministrationService administratorService, JwtService jwtService) {
+    public AdministratorController(AdministrationService administratorService) {
         this.administratorService = administratorService;
-        this.jwtService = jwtService;
     }
 
     /**
@@ -87,8 +85,8 @@ public class AdministratorController {
 
             return new ResponseEntity<>(responseEntity.getStatusCode());
         } catch (Exception e){
-                e.printStackTrace();
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

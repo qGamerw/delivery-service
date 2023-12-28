@@ -29,10 +29,18 @@ const getUserFromLocalStorage = (): any | null => {
     }
     return null;
 };
+const areUserAndTokenPresent = (): any | null => {
+    const user = localStorage.getItem('user');
+    const token = sessionStorage.getItem('user');
+    if (user && token) {
+        return true;
+    }
+    return false;
+};
 
 const initialState: UserState = {
     user: getUserFromLocalStorage(),
-    isAuth: false,
+    isAuth: areUserAndTokenPresent(),
 };
 
 const authSlice = createSlice({

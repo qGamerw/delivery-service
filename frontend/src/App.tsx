@@ -21,12 +21,6 @@ const App: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user) {
-            dispatch(setAuth(true));
-        }
-    }, [user, dispatch]);
-
-    useEffect(() => {
         const refreshInterval = setInterval(() => {
             refreshToken();
         }, 14 * 60 * 1000);
