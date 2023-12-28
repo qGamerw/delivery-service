@@ -3,13 +3,14 @@ package ru.sber.delivery.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import ru.sber.delivery.entities.User;
+import ru.sber.delivery.exceptions.UserNotFound;
 import ru.sber.delivery.services.AdministrationService;
 import ru.sber.delivery.services.JwtService;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.http.*;
 
 /**
  * Класс отвечающий за обработку запросов администраторов
@@ -38,22 +40,6 @@ public class AdministratorController {
         this.administratorService = administratorService;
         this.jwtService = jwtService;
     }
-
-    // @GetMapping("/test")
-    // @PreAuthorize("hasRole('client_user')")
-    // public ResponseEntity<?> test() {
-    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    //     JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
-    //     Jwt jwt = Jwt.withTokenValue(jwtAuthenticationToken.getToken().getTokenValue()).header(null, jwtAuthenticationToken).claim(null, jwtAuthenticationToken).build();
-    //     String subClaim = jwtService.getSubClaim(jwt);
-    //     System.out.println(subClaim);
-    //     System.out.println(jwt.getTokenValue());
-    //     System.out.println(jwtService.getExpirationTime(jwt));
-    //     return ResponseEntity.ok().body(subClaim);
-
-        
-    // }
 
     /**
      * Возвращает информацию о курьере
@@ -80,14 +66,29 @@ public class AdministratorController {
      * @param user - новая информация о пользователе
      * @return - результат запроса
      */
-    @PutMapping
-    public ResponseEntity<?> updateCourier(@RequestBody User user) {
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('client_admin')")
+    public ResponseEntity<?> updateCourier(@PathVariable("id") String idUser, @RequestBody Object object) {
         log.info("Обновление данных о курьере");
+        Jwt jwtToken = getUserJwtTokenSecurityContext(); 
 
-        if (administratorService.update(user)) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.badRequest().build();
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(jwtToken.getTokenValue());
+
+        HttpEntity<Object> requestEntity = new HttpEntity<>(object, headers);
+
+        String apiUrl = "http://localhost:8080/admin/realms/delivery-realm/users/" + idUser;
+
+        try {
+            ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.PUT, requestEntity, String.class);
+
+            return new ResponseEntity<>(responseEntity.getStatusCode());
+        } catch (Exception e){
+                e.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -136,5 +137,19 @@ public class AdministratorController {
         return ResponseEntity.ok().body(administratorService.findUsersByShift(shiftDate));
     }
 
+
+    
+    private Jwt getUserJwtTokenSecurityContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication instanceof JwtAuthenticationToken) {
+            JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
+            Jwt jwt = jwtAuthenticationToken.getToken();
+
+            return jwt;
+        } else {
+            throw new UserNotFound("Пользователь не найден");
+        }
+    }
 
 }
