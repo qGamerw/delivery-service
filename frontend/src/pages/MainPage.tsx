@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Map, Placemark, YMaps } from "@pbe/react-yandex-maps";
+import { GeolocationControl, Map, Placemark, YMaps } from "@pbe/react-yandex-maps";
 import '../App.css';
 import React from "react";
 import courierService from "../services/courierService";
@@ -26,22 +26,24 @@ const MainPage: React.FC = () => {
 
     const [currentCoordinates, setCurrentCoordinates] = useState<Coordinates | null>(null);
     const [mapCenter, setMapCenter] = useState<[number, number]>([55.75, 37.57]);
+    const [mapZoom, setMapZoom] = useState<number>(15);
 
     const updateCoordinates = async () => {
-        try {
-            const position = await getLocation();
-            const { latitude, longitude } = position.coords;
+      setMapZoom(18);
+      try {
+          const position = await getLocation();
+          const { latitude, longitude } = position.coords;
 
-            if (isAuth && (!currentCoordinates || (currentCoordinates.latitude !== latitude && currentCoordinates.longitude !== longitude))) {
-                setCurrentCoordinates(position.coords);
-                await courierService.updateCoordinates(latitude, longitude);
+          if (isAuth && (!currentCoordinates || (currentCoordinates.latitude !== latitude && currentCoordinates.longitude !== longitude))) {
+              setCurrentCoordinates(position.coords);
+              await courierService.updateCoordinates(latitude, longitude);
 
-                setMapCenter([latitude, longitude]);
-            }
+              setMapCenter([latitude, longitude]);
+          }
 
-        } catch (error) {
-            console.error('Failed to get current position:', error);
-        }
+      } catch (error) {
+          console.error('Failed to get current position:', error);
+      }
     };
 
     useEffect(() => {
@@ -58,7 +60,7 @@ const MainPage: React.FC = () => {
 
     const [ymaps, setYmaps] = useState<any>(null);
   const routes = useRef<any>(null);
-
+  
   const getRoute = (ref: any) => {
     console.log("allOrders.length: " + allOrders.length);
     if (ymaps && currentCoordinates && ref.geoObjects.getLength() === 0 && allOrders.length > 0) {
@@ -95,19 +97,34 @@ const MainPage: React.FC = () => {
   };
 
     return (
-        <YMaps query={{ apikey: '8ec18778-cb70-437f-87fc-7c17e8e0bb71'}}>
-            <Map
-                className="map"
-                state={{center: mapCenter, zoom: 12}}
-                modules={["multiRouter.MultiRoute"]}
-                onLoad={(ymaps) => setYmaps(ymaps)}
-                instanceRef={(ref) => ref && getRoute(ref)}
-            >
-                {/* {currentCoordinates && (
-                    <Placemark geometry={[currentCoordinates.latitude, currentCoordinates.longitude]} />
-                )} */}
-            </Map>
-        </YMaps>
+      <YMaps query={{ apikey: '8ec18778-cb70-437f-87fc-7c17e8e0bb71'}}>
+          <Map
+              className="map"
+              defaultState={{
+                center: mapCenter, zoom: mapZoom,
+              }}
+              // state={{
+              //   center: mapCenter, zoom: mapZoom,
+              // }}
+              options={{
+                autoFitToViewport: "always",
+              }}
+              modules={["multiRouter.MultiRoute"]}
+              onLoad={(ymaps) => setYmaps(ymaps)}
+              instanceRef={(ref) => ref && getRoute(ref)}
+          >
+          <GeolocationControl
+              options={{
+                  float: 'left',
+              }}
+
+          />
+              {/* {currentCoordinates && (
+                  <Placemark geometry={[currentCoordinates.latitude, currentCoordinates.longitude]} />
+              )} */}
+          </Map>
+      </YMaps>
+
     );
 };
 
