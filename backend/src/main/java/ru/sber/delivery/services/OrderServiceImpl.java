@@ -11,10 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -26,9 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import ru.sber.delivery.entities.OrderToken;
-import ru.sber.delivery.exceptions.UserNotFound;
 import ru.sber.delivery.order.OrderFeign;
-// import ru.sber.delivery.security.services.UserDetailsImpl;
 
 /**
  * Реализует логику работы с order-service
@@ -57,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
     public ResponseEntity<?> updateOrderCourierId(Object order) {
         checkAndUpdateOrderTokens();
         List<OrderToken> orderToken = orderTokenService.findAll();
-        return orderFeign.updateOrderCourier("Bearer "+orderToken.get(0).getAccessToken(), getUserIdSecurityContext(), order);
+        return orderFeign.updateOrderCourier("Bearer "+orderToken.get(0).getAccessToken(), jwtService.getUserIdSecurityContext(), order);
     }
 
     @Override
@@ -77,40 +71,21 @@ public class OrderServiceImpl implements OrderService {
     public Page<?> findOrdersByCourierId(int page, int pageSize) {
         checkAndUpdateOrderTokens();
         List<OrderToken> orderToken = orderTokenService.findAll();
-        return orderFeign.getAllOrdersByCourierId("Bearer "+orderToken.get(0).getAccessToken(), getUserIdSecurityContext(), page, pageSize).getBody();
+        return orderFeign.getAllOrdersByCourierId("Bearer "+orderToken.get(0).getAccessToken(), jwtService.getUserIdSecurityContext(), page, pageSize).getBody();
     }
 
     @Override
     public List<?> getOrdersIsDelivering() {
         checkAndUpdateOrderTokens();
         List<OrderToken> orderToken = orderTokenService.findAll();
-        return orderFeign.getOrdersIsDelivering("Bearer "+orderToken.get(0).getAccessToken(), getUserIdSecurityContext()).getBody();
+        return orderFeign.getOrdersIsDelivering("Bearer "+orderToken.get(0).getAccessToken(), jwtService.getUserIdSecurityContext()).getBody();
     }
 
     @Override
     public Integer getCountOrderCourier() {
         checkAndUpdateOrderTokens();
         List<OrderToken> orderToken = orderTokenService.findAll();
-        return orderFeign.getCountOrderFromCourier("Bearer "+orderToken.get(0).getAccessToken(), getUserIdSecurityContext()).getBody();
-    }
-
-    /**
-     * Возвращает id user из security context
-     *
-     * @return идентификатор пользователя
-     */
-    private String getUserIdSecurityContext() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication instanceof JwtAuthenticationToken) {
-            JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
-            Jwt jwt = jwtAuthenticationToken.getToken();
-            String subClaim = jwtService.getSubClaim(jwt);
-
-            return subClaim;
-        } else {
-            throw new UserNotFound("Пользователь не найден");
-        }
+        return orderFeign.getCountOrderFromCourier("Bearer "+orderToken.get(0).getAccessToken(), jwtService.getUserIdSecurityContext()).getBody();
     }
 
     private void checkAndUpdateOrderTokens() {

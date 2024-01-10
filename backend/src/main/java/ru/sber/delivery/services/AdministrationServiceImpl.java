@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.sber.delivery.entities.Shift;
 import ru.sber.delivery.entities.User;
 import ru.sber.delivery.entities.enum_model.ERole;
-import ru.sber.delivery.repositories.ShiftRepository;
+// import ru.sber.delivery.repositories.ShiftRepository;
 import ru.sber.delivery.repositories.UserRepository;
 
 import java.time.LocalDate;
@@ -22,12 +22,12 @@ import java.util.Optional;
 public class AdministrationServiceImpl implements AdministrationService {
 
     private final UserRepository userRepository;
-    private final ShiftRepository shiftRepository;
+    // private final ShiftRepository shiftRepository;
 
     @Autowired
-    public AdministrationServiceImpl(UserRepository userRepository, ShiftRepository shiftRepository) {
+    public AdministrationServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.shiftRepository = shiftRepository;
+        // this.shiftRepository = shiftRepository;
     }
 
     @Override
@@ -78,14 +78,14 @@ public class AdministrationServiceImpl implements AdministrationService {
                 .toList();
     }
 
-    @Override
-    public List<User> findUsersByShift(LocalDate dateShift) {
-        log.info("Поиск пользователей по смене со стороны администратора");
-        return shiftRepository.findShiftsByBeginShift(dateShift)
-                .stream()
-                .map(Shift::getUser)
-                .filter(user -> userRepository.existsById(user.getId()))
-                .toList();
-    }
+    // @Override
+    // public List<User> findUsersByShift(LocalDate dateShift) {
+    //     log.info("Поиск пользователей по смене со стороны администратора");
+    //     return shiftRepository.findShiftsByBeginShift(dateShift)
+    //             .stream()
+    //             .map(Shift::getUser)
+    //             .filter(user -> userRepository.existsById(user.getId()))
+    //             .toList();
+    // }
 
 }

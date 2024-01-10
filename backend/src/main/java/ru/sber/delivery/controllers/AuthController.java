@@ -1,7 +1,6 @@
 package ru.sber.delivery.controllers;
 
 import jakarta.transaction.Transactional;
-import ru.sber.delivery.exceptions.UserNotFound;
 import ru.sber.delivery.models.Attributes;
 import ru.sber.delivery.models.Credential;
 import ru.sber.delivery.models.LoginRequest;
@@ -14,22 +13,15 @@ import ru.sber.delivery.services.JwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.*;
 
-
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -56,7 +48,7 @@ public class AuthController {
     @PostMapping("/signup")
     @PreAuthorize("hasRole('client_admin')")
     public ResponseEntity<String> signUpUser(@RequestBody SignupRequest signupRequest) {
-        Jwt jwtToken = getUserJwtTokenSecurityContext(); 
+        Jwt jwtToken = jwtService.getUserJwtTokenSecurityContext(); 
 
         UserRequest userRequest = new UserRequest();
         userRequest.setUsername(signupRequest.getUsername());
@@ -154,24 +146,11 @@ public class AuthController {
         HttpHeaders userHeaders = new HttpHeaders();
         userHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-        Jwt jwt = getUserJwtTokenSecurityContext();
-        UserDetails userDetails = new UserDetails(jwtService.getSubClaim(jwt), jwtService.getPreferredUsernameClaim(jwt), 
-                jwtService.getEmailClaim(jwt), jwtService.getPhoneNumberClaim(jwt), jwtService.getCreatedTimestampClaim(jwt));
+        UserDetails userDetails = new UserDetails(jwtService.getSubClaim(), jwtService.getPreferredUsernameClaim(), 
+                jwtService.getEmailClaim(), jwtService.getPhoneNumberClaim(), jwtService.getCreatedTimestampClaim(), 
+                courierService.findUser().get().getStatus());
 
         return new ResponseEntity<>(userDetails, userHeaders, HttpStatus.OK);
     }
 
-    
-    private Jwt getUserJwtTokenSecurityContext() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication instanceof JwtAuthenticationToken) {
-            JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
-            Jwt jwt = jwtAuthenticationToken.getToken();
-
-            return jwt;
-        } else {
-            throw new UserNotFound("Пользователь не найден");
-        }
-    }
 }

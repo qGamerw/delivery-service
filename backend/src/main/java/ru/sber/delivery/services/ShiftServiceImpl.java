@@ -2,16 +2,10 @@ package ru.sber.delivery.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import ru.sber.delivery.entities.Shift;
 import ru.sber.delivery.entities.User;
-import ru.sber.delivery.exceptions.UserNotFound;
 import ru.sber.delivery.repositories.ShiftRepository;
-// import ru.sber.delivery.security.services.UserDetailsImpl;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,7 +32,7 @@ public class ShiftServiceImpl implements ShiftService {
         Shift shift = new Shift();
         shift.setBeginShift(LocalDateTime.now());
         User user = new User();
-        user.setId(getUserIdSecurityContext());
+        user.setId(jwtService.getUserIdSecurityContext());
         shift.setUser(user);
         return shiftRepository.save(shift).getId();
     }
@@ -47,7 +41,7 @@ public class ShiftServiceImpl implements ShiftService {
     public boolean update(Shift shift) {
         log.info("Обновление смены");
         User user = new User();
-        user.setId(getUserIdSecurityContext());
+        user.setId(jwtService.getUserIdSecurityContext());
         if (shiftRepository.existsById(shift.getId())) {
             log.info("Обновление успешно");
             shift.setUser(user);
@@ -76,24 +70,5 @@ public class ShiftServiceImpl implements ShiftService {
         return shiftRepository.findAllByUserId(idUser);
     }
 
-    /**
-     * Возвращает id user из security context
-     *
-     * @return идентификатор пользователя
-     */
-    private String getUserIdSecurityContext() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication instanceof JwtAuthenticationToken) {
-            JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
-            Jwt jwt = jwtAuthenticationToken.getToken();
-            String subClaim = jwtService.getSubClaim(jwt);
-
-            return subClaim;
-        } else {
-            throw new UserNotFound("Пользователь не найден");
-        }
-
-    }
 
 }

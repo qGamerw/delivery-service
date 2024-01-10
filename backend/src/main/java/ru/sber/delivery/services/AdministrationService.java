@@ -44,5 +44,5 @@ public interface AdministrationService {
      * @param dateShift - день смены
      * @return - Список пользователей
      */
-    List<User> findUsersByShift(LocalDate dateShift);
+    // List<User> findUsersByShift(LocalDate dateShift);
 }

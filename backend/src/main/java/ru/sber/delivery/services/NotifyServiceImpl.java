@@ -2,15 +2,9 @@ package ru.sber.delivery.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import ru.sber.delivery.entities.Notify;
-import ru.sber.delivery.exceptions.UserNotFound;
 import ru.sber.delivery.repositories.NotifyRepository;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.jwt.Jwt;
-// import ru.sber.delivery.security.services.UserDetailsImpl;
 
 import java.util.List;
 
@@ -29,7 +23,7 @@ public class NotifyServiceImpl implements NotifyService {
 
     @Override
     public List<Notify> findNotifyByUserId() {
-        return notifyRepository.findAllByUser_Id(getUserIdSecurityContext());
+        return notifyRepository.findAllByUser_Id(jwtService.getUserIdSecurityContext());
     }
 
     @Override
@@ -57,24 +51,5 @@ public class NotifyServiceImpl implements NotifyService {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Возвращает id user из security context
-     *
-     * @return идентификатор пользователя
-     */
-    private String getUserIdSecurityContext() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication instanceof JwtAuthenticationToken) {
-            JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
-            Jwt jwt = jwtAuthenticationToken.getToken();
-            String subClaim = jwtService.getSubClaim(jwt);
-
-            return subClaim;
-        } else {
-            throw new UserNotFound("Пользователь не найден");
-        }
     }
 }
