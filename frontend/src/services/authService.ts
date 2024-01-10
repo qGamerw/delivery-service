@@ -55,6 +55,10 @@ const login = async (login: Login, dispatch: Dispatch): Promise<User> => {
     console.log(response);
     dispatch(loginUser(response.data));
 
+    return response.data;
+};
+
+const getDetails = async (dispatch: Dispatch): Promise<User> => {
     const headers = authHeader();
 
     let detailsResponse = await axios
@@ -93,6 +97,7 @@ const authService = {
     login,
     logout,
     refresh,
+    getDetails,
 };
 
 export default authService;

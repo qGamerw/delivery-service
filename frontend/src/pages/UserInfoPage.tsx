@@ -1,12 +1,15 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
-import {Button, Modal} from 'antd';
+import {Button, Dropdown, Menu, Modal} from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import {RootState} from '../store';
 import profileImage from "../images/user-profile-image.jpg";
 import {Link} from 'react-router-dom';
-import {setAllOrders} from "../slices/orderSlice";
+import { updateUserStatus } from "../slices/authSlice";
 import orderService from "../services/orderService";
+import courierService from "../services/courierService";
+import authService from "../services/authService";
 
 const ProfileContainer = styled.div`
   padding: 20px;
@@ -44,7 +47,17 @@ const UserPage: React.FC = () => {
     const user = useSelector((store: RootState) => store.auth.user);
     useEffect(() => {
         orderService.getCountOrder(dispatch);
+        authService.getDetails(dispatch);
     }, []);
+
+    
+    const handleStatusChange = (selectedStatus: string) => {
+        courierService.updateStatus(selectedStatus);
+        dispatch(updateUserStatus(selectedStatus));
+    };
+
+    const statusOptions = ['FREE', 'ACTIVE', 'INACTIVE'];
+
     return (
         <ProfileContainer>
             <ProfileImage src={profileImage} alt="User Profile"/>
@@ -70,6 +83,19 @@ const UserPage: React.FC = () => {
                 <Button type="primary">
                     <Link to="/all-orders">Посмотреть прошлые заказы</Link>
                 </Button>
+                <ButtonContainer>
+                    <Dropdown overlay={
+                        <Menu onClick={(e) => handleStatusChange(e.key as string)}>
+                            {statusOptions.map((status) => (
+                                <Menu.Item key={status}>{status}</Menu.Item>
+                            ))}
+                        </Menu>
+                    }>
+                        <Button>
+                            Изменить статус: {user?.status} <DownOutlined />
+                        </Button>
+                    </Dropdown>
+                </ButtonContainer>
             </ButtonContainer>
         </ProfileContainer>
     );
