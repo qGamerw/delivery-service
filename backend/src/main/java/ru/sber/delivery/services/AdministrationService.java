@@ -31,7 +31,7 @@ public interface AdministrationService {
      * @param idUser - id пользователя
      * @return данные о пользователе
      */
-    Optional<User> findUser(long idUser);
+    Optional<User> findUser(String idUser);
 
     /**
      * Возвращает информацию о всех пользователях, кроме администрации
@@ -44,5 +44,5 @@ public interface AdministrationService {
      * @param dateShift - день смены
      * @return - Список пользователей
      */
-    List<User> findUsersByShift(LocalDate dateShift);
+    // List<User> findUsersByShift(LocalDate dateShift);
 }
