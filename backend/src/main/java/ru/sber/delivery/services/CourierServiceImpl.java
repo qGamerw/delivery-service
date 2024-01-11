@@ -4,11 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sber.delivery.entities.Notify;
-import ru.sber.delivery.entities.Role;
 import ru.sber.delivery.entities.User;
-import ru.sber.delivery.entities.enum_model.ERole;
 import ru.sber.delivery.entities.enum_model.EStatusCourier;
-import ru.sber.delivery.repositories.RoleRepository;
 import ru.sber.delivery.repositories.UserRepository;
 
 import java.math.BigDecimal;
@@ -23,16 +20,14 @@ import java.util.Optional;
 public class CourierServiceImpl implements CourierService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final NotifyService notifyService;
     private final OrderService orderService;
     private final AdministrationService administrationService;
     private final JwtService jwtService;
 
     @Autowired
-    public CourierServiceImpl(UserRepository userRepository, RoleRepository roleRepository, NotifyService notifyService, OrderService orderService, AdministrationService administrationService, JwtService jwtService) {
+    public CourierServiceImpl(UserRepository userRepository, NotifyService notifyService, OrderService orderService, AdministrationService administrationService, JwtService jwtService) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.notifyService = notifyService;
         this.orderService = orderService;
         this.administrationService = administrationService;
@@ -42,10 +37,7 @@ public class CourierServiceImpl implements CourierService {
     @Override
     public boolean addUserById(String userId) {
         User user = new User(userId);
-        
-        Role userRole = roleRepository.findByRole(ERole.COURIER)
-                    .orElseThrow(() -> new RuntimeException("Роль не найдена"));
-        user.setRole(userRole);
+
         log.info("Регистрация курьера");
         userRepository.save(user);
         return true;

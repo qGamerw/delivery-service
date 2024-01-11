@@ -22,37 +22,13 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users"/*,
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email"),
-                @UniqueConstraint(columnNames = "phoneNumber")
-        }*/)
+@Table(name = "users")
 public class User {
 
     @Id
     @Column(name = "id_user")
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-    // @NotBlank
-    // @Size(max = 20)
-    // private String username;
-    // @NotBlank
-    // @Size(max = 50)
-    // @Email
-    // private String email;
-    // @NotBlank
-    // @Size(max = 12)
-    // private String phoneNumber;
-    // @NotBlank
-    // @Size(max = 120)
-    // @JsonIgnore
-    // private String password;
 
-    // @Column(name = "date_registration")
-    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    // @Temporal(TemporalType.TIMESTAMP)
-    // private LocalDateTime dateRegistration;
+    private String id;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
@@ -63,23 +39,12 @@ public class User {
     @Column(precision = 9, scale = 6)
     private BigDecimal longitude;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
-
     public User(String id) {
         this.id = id;
     }
 
-    public User(String id, String username, String email, String phoneNumber,
-                    String password, LocalDateTime dateRegistration,
-                    EStatusCourier status, BigDecimal latitude, BigDecimal longitude) {
-        this.id = id;
-        // this.username = username;
-        // this.email = email;
-        // this.phoneNumber = phoneNumber;
-        // this.password = password;
-        // this.dateRegistration = dateRegistration;
+    public User(EStatusCourier status, BigDecimal latitude, BigDecimal longitude) {
+
         this.status = status;
         this.latitude = latitude;
         this.longitude = longitude;

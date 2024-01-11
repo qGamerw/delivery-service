@@ -22,27 +22,16 @@ import java.util.Optional;
 public class AdministrationServiceImpl implements AdministrationService {
 
     private final UserRepository userRepository;
-    // private final ShiftRepository shiftRepository;
 
     @Autowired
     public AdministrationServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        // this.shiftRepository = shiftRepository;
     }
 
     @Override
     public boolean update(User user) {
         log.info("Обновление данных пользователя: {}", user.getId());
         if (userRepository.existsById(user.getId())) {
-            User oldUser = userRepository.findById(user.getId()).get();
-            // if (user.getPassword() == null) {
-            //     user.setPassword(oldUser.getPassword());
-            // }
-            // user.setDateRegistration(oldUser.getDateRegistration());
-            if (user.getRole() == null) {
-                user.setRole(oldUser.getRole());
-            }
-
             log.info("Обновление пользователя: {}, успешно", user.getId());
             userRepository.save(user);
             return true;
@@ -74,18 +63,8 @@ public class AdministrationServiceImpl implements AdministrationService {
         log.info("Поиск пользователей со стороны администратора");
         return userRepository.findAll()
                 .stream()
-                .filter(user -> user.getRole().getRole() != ERole.ADMINISTRATOR)
                 .toList();
     }
 
-    // @Override
-    // public List<User> findUsersByShift(LocalDate dateShift) {
-    //     log.info("Поиск пользователей по смене со стороны администратора");
-    //     return shiftRepository.findShiftsByBeginShift(dateShift)
-    //             .stream()
-    //             .map(Shift::getUser)
-    //             .filter(user -> userRepository.existsById(user.getId()))
-    //             .toList();
-    // }
 
 }
