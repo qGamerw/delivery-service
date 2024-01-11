@@ -4,11 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sber.delivery.entities.Notify;
-import ru.sber.delivery.entities.Role;
 import ru.sber.delivery.entities.User;
-import ru.sber.delivery.entities.enum_model.ERole;
 import ru.sber.delivery.entities.enum_model.EStatusCourier;
-import ru.sber.delivery.repositories.RoleRepository;
 import ru.sber.delivery.repositories.UserRepository;
 
 import java.math.BigDecimal;
@@ -25,14 +22,11 @@ public class RestaurantEmployeeServiceImpl implements RestaurantEmployeeService 
 
     private final UserRepository userRepository;
     private final NotifyService notifyService;
-    private final RoleRepository roleRepository;
 
     @Autowired
-    public RestaurantEmployeeServiceImpl(UserRepository userRepository, AdministrationService administrationService, NotifyService notifyService, RoleRepository roleRepository) {
+    public RestaurantEmployeeServiceImpl(UserRepository userRepository, AdministrationService administrationService, NotifyService notifyService) {
         this.userRepository = userRepository;
-
         this.notifyService = notifyService;
-        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -43,20 +37,19 @@ public class RestaurantEmployeeServiceImpl implements RestaurantEmployeeService 
 
     @Override
     public Optional<User> findNearestFreeCourier(BigDecimal restaurantLatitude, BigDecimal restaurantLongitude) {
-        Optional<Role> role = roleRepository.findByRole(ERole.COURIER);
+
         log.info("Поиск ближайшего свободного курьера (со стороны работника ресторана)");
-        if (role.isPresent()) {
-            List<User> freeCouriers = userRepository.findUserByRoleAndStatus(role.get(), EStatusCourier.FREE);
-            User nearestCourier = freeCouriers
-                    .stream()
-                    .min(Comparator.comparingDouble(user -> haversineDistance(user.getLongitude().doubleValue(), user.getLatitude().doubleValue(),
-                            restaurantLongitude.doubleValue(), restaurantLatitude.doubleValue())))
-                    .orElse(null);
-            log.info("Ближайший курьер {}", nearestCourier);
-            return Optional.ofNullable(nearestCourier);
-        }
-        log.warn("Курьер не  найден");
-        return Optional.empty();
+
+        List<User> freeCouriers = userRepository.findUserByStatus(EStatusCourier.FREE);
+        User nearestCourier = freeCouriers
+                .stream()
+                .min(Comparator.comparingDouble(user -> haversineDistance(user.getLongitude().doubleValue(), user.getLatitude().doubleValue(),
+                        restaurantLongitude.doubleValue(), restaurantLatitude.doubleValue())))
+                .orElse(null);
+        log.info("Ближайший курьер {}", nearestCourier);
+        return Optional.ofNullable(nearestCourier);
+
+
     }
 
     private double haversineDistance(double lon1, double lat1, double lon2, double lat2) {

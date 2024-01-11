@@ -107,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Transactional
-    private void updateOrderTokens() {
+    public void updateOrderTokens() {
         HttpHeaders tokenHeaders = new HttpHeaders();
         tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         
