@@ -17,13 +17,11 @@
 
 ## Интеграция с другими сервисами
 
-### Сервис Клиент
-https://github.com/qGamerw/customer-service
+### Сервис [Клиент](https://github.com/qGamerw/customer-service)
 
 * Ставит оценку за доставку
 
-### Сервис Заказы
-https://github.com/qGamerw/order-service
+### Сервис [Заказы](https://github.com/qGamerw/order-service)
 
 * Получаем информацию о заказах
 
@@ -31,12 +29,17 @@ https://github.com/qGamerw/order-service
 
 ### Backend
 
-* Java
 * Spring Boot
+* Spring Security
+* Hibernate
+* Apache Kafka
+* Spring CLoud OpenFeign
+* KeyCloak
 
 ### Frontend
 
-* React JS
+* React js
+* Ant design
 
 ### БД
 
